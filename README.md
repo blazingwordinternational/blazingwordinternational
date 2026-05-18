@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- updated --><!DOCTYPE html>
 <html>
 <head>
   <title>Blazing Word International</title>
