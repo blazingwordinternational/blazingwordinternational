@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Blazing Word International</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#0b0b0b;
+color:white;
+}
+
+header{
+background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65');
+background-size:cover;
+background-position:center;
+padding:80px 20px;
+text-align:center;
+}
+
+header h1{
+font-size:40px;
+color:#ff4500;
+margin-bottom:5px;
+}
+
+header p{
+font-size:20px;
+color:#f5f5f5;
+}
+
+.menu{
+background:#111;
+padding:15px;
+text-align:center;
+}
+
+.menu a{
+color:white;
+text-decoration:none;
+margin:0 15px;
+font-weight:bold;
+}
+
+.section{
+padding:40px 20px;
+max-width:900px;
+margin:auto;
+text-align:center;
+}
+
+.section h2{
+color:#ffb300;
+margin-bottom:15px;
+}
+
+.pastor{
+background:#151515;
+border-radius:10px;
+padding:25px;
+margin-top:20px;
+}
+
+.button{
+display:inline-block;
+margin-top:20px;
+padding:12px 25px;
+background:#ff4500;
+color:white;
+text-decoration:none;
+border-radius:5px;
+font-weight:bold;
+}
+
+footer{
+background:#111;
+text-align:center;
+padding:20px;
+margin-top:40px;
+font-size:14px;
+}
+
+.fire{
+font-size:20px;
+color:#ff4500;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🔥 Blazing Word International</h1>
+<p>aka Life Abode</p>
+<p>Raising a Generation Ablaze for Christ</p>
+</header>
+
+<div class="menu">
+<a href="#">Home</a>
+<a href="#about">About</a>
+<a href="#pastor">Pastor</a>
+<a href="#contact">Contact</a>
+</div>
+
+<div class="section" id="about">
+<h2>Welcome</h2>
+<p>
+Welcome to Blazing Word International — a place of Fire, Word, Worship and Transformation where lives are ignited through God's presence.
+</p>
+</div>
+
+<div class="section">
+<h2>Vision</h2>
+<p>
+Raising a generation on fire for God through the Word and Spirit.
+</p>
+</div>
+
+<div class="section">
+<h2>Mission</h2>
+<p>
+To disciple believers into deep intimacy with Christ and impactful kingdom living.
+</p>
+</div>
+
+<div class="section pastor" id="pastor">
+<h2>Founder / Lead Pastor</h2>
+<h3>Apst. K. Atting</h3>
+<p>
+A passionate servant of God committed to spreading the blazing fire of God's Word and raising transformed lives.
+</p>
+</div>
+
+<div class="section" id="contact">
+<h2>Connect With Us</h2>
+<p>Blazing Word International</p>
+<p>Email: yourchurch@email.com</p>
+<p>Phone / WhatsApp: +234 xxx xxx xxxx</p>
+
+<a class="button" href="#">
+Chat With Us
+</a>
+</div>
+
+<div class="section fire">
+🔥 FIRE IS OUR LIFESTYLE 🔥
+</div>
+
+<footer>
+© 2026 Blazing Word International | All Rights Reserved
+</footer>
+
+</body>
+</html>
