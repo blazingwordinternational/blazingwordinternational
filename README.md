@@ -138,9 +138,8 @@ A passionate servant of God committed to spreading the blazing fire of God's Wor
 <div class="section" id="contact">
 <h2>Connect With Us</h2>
 <p>Blazing Word International</p>
-<p>Email: yourchurch@email.com</p>
-<p>Phone / WhatsApp: +234 xxx xxx xxxx</p>
-
+<p>Email: blazingwordinternational@gmail.com</p>
+<p>Phone / WhatsApp: +2349066079452</p>
 <a class="button" href="#">
 Chat With Us
 </a>
