@@ -1,67 +1,234 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Daily Blaze</title>
+<title>Daily Blaze | Blazing Word International</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
+*{
 margin:0;
-font-family:Arial;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Arial,sans-serif;
 background:#0b0b0b;
 color:white;
+line-height:1.8;
+}
+
+/* HEADER */
+.header{
+background:
+linear-gradient(rgba(0,0,0,.80),rgba(0,0,0,.80)),
+url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65');
+background-size:cover;
+background-position:center;
 text-align:center;
+padding:80px 20px;
 }
 
-header{
+.header img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:15px;
+box-shadow:0 0 20px rgba(255,140,0,.4);
+}
+
+.header h1{
+color:#ff4500;
+font-size:40px;
+}
+
+.header p{
+color:#ffcc70;
+}
+
+/* NAV */
+nav{
 background:#111;
-padding:20px;
+padding:15px;
+text-align:center;
+position:sticky;
+top:0;
 }
 
-a{
-color:#ffb300;
+nav a{
+color:white;
 text-decoration:none;
-margin:10px;
+margin:0 10px;
 font-weight:bold;
+}
+
+nav a:hover{
+color:#ff4500;
+}
+
+/* SECTION */
+.section{
+max-width:950px;
+margin:auto;
+padding:60px 20px;
 }
 
 .card{
 background:#151515;
-padding:20px;
-margin:20px auto;
-max-width:800px;
-border-radius:10px;
-text-align:left;
+padding:25px;
+border-radius:12px;
+margin-top:20px;
 }
 
-h2{ color:#ffb300; }
+.card h2{
+color:#ff4500;
+margin-bottom:10px;
+}
+
+.edit-box{
+background:#2b1700;
+border:2px solid #ff4500;
+padding:25px;
+border-radius:12px;
+margin-top:20px;
+}
+
+.edit-box h2{
+color:#ffb300;
+text-align:center;
+}
+
+/* BUTTON */
+.btn{
+display:inline-block;
+background:#ff4500;
+color:white;
+text-decoration:none;
+padding:12px 20px;
+border-radius:8px;
+margin-top:15px;
+font-weight:bold;
+}
+
+/* FLOAT */
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:16px;
+border-radius:50px;
+font-size:22px;
+text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+background:#111;
+text-align:center;
+padding:25px;
+margin-top:30px;
+}
 </style>
 </head>
 
 <body>
 
-<header>
-<h2>🔥 Daily Blaze Devotional</h2>
+<!-- HEADER -->
+<div class="header">
+
+<img src="file_00000000987471f4bc52e2d36349cbe1.png">
+
+<h1>🔥 Daily Blaze</h1>
+
+<p>Blazing Word International</p>
+
+</div>
+
+<!-- NAVIGATION -->
+<nav>
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
-<a href="sermons.html">Sermons</a>
+<a href="pastor.html">Pastor</a>
+<a href="daily-blaze.html">Daily Blaze</a>
 <a href="contact.html">Contact</a>
-</header>
+</nav>
 
-<div class="card">
-<h3>🔥 Today’s Word</h3>
-<p>God is raising a people full of fire and glory.</p>
+<div class="section">
+
+<!-- POST AREA -->
+<div class="edit-box">
+
+<h2>🔥 POST TODAY'S BLAZE HERE 🔥</h2>
+
+<p>
+
+Every day, open ONLY this page and replace the content below.
+
+Do not search the whole website.
+
+Just change:
+Topic • Scripture • Message • Prayer • Declaration
+
+</p>
+
 </div>
 
+<!-- TODAY'S DEVOTIONAL -->
 <div class="card">
-<h3>📖 Scripture</h3>
-<p>Jeremiah 20:9 — His word was like fire in my bones.</p>
+
+<h2>Topic: Faith That Works</h2>
+
+<p>
+
+<b>Scripture:</b> James 2:17
+
+</p>
+
+<p>
+
+Faith without works is dead. Genuine faith produces action, obedience and trust in God.
+
+</p>
+
+<p>
+
+<b>Prayer:</b><br>
+
+Lord, strengthen my faith and help me walk in obedience and confidence in Your Word.
+
+</p>
+
+<p>
+
+<b>Declaration:</b><br>
+
+My faith is alive, active and producing kingdom results.
+
+</p>
+
 </div>
 
-<div class="card">
-<h3>🙏 Declaration</h3>
-<p>I carry fire. I walk in power. I manifest Christ daily.</p>
 </div>
+
+<!-- FOOTER -->
+<footer>
+
+🔥 FIRE IS OUR LIFESTYLE 🔥
+
+<br><br>
+
+© 2026 Blazing Word International
+
+</footer>
+
+<!-- FLOAT -->
+<a class="whatsapp"
+href="https://wa.me/2349066079452">
+💬
+</a>
 
 </body>
 </html>
