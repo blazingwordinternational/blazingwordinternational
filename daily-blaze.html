@@ -5,11 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
 font-family:Arial,sans-serif;
@@ -18,15 +14,14 @@ color:white;
 line-height:1.8;
 }
 
-/* HEADER */
 .header{
 background:
-linear-gradient(rgba(0,0,0,.80),rgba(0,0,0,.80)),
+linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.82)),
 url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65');
 background-size:cover;
 background-position:center;
-text-align:center;
 padding:80px 20px;
+text-align:center;
 }
 
 .header img{
@@ -34,8 +29,8 @@ width:120px;
 height:120px;
 border-radius:50%;
 object-fit:cover;
+box-shadow:0 0 20px rgba(255,140,0,.5);
 margin-bottom:15px;
-box-shadow:0 0 20px rgba(255,140,0,.4);
 }
 
 .header h1{
@@ -43,18 +38,10 @@ font-size:40px;
 color:#ff4500;
 }
 
-.header p{
-color:#ffcc70;
-}
-
-/* NAVIGATION */
 nav{
 background:#111;
 padding:15px;
 text-align:center;
-position:sticky;
-top:0;
-z-index:999;
 }
 
 nav a{
@@ -64,15 +51,10 @@ margin:0 10px;
 font-weight:bold;
 }
 
-nav a:hover{
-color:#ff4500;
-}
-
-/* SECTION */
 .section{
 max-width:950px;
 margin:auto;
-padding:60px 20px;
+padding:50px 20px;
 }
 
 .card{
@@ -82,24 +64,24 @@ border-radius:12px;
 margin-top:20px;
 }
 
-.card h2{
-color:#ff4500;
-margin-bottom:12px;
-}
-
-/* POST BUTTON */
 .btn{
 display:inline-block;
 background:#ff4500;
 color:white;
+padding:12px 20px;
 text-decoration:none;
-padding:14px 22px;
 border-radius:8px;
 margin-top:15px;
 font-weight:bold;
 }
 
-/* WHATSAPP */
+footer{
+background:#111;
+padding:25px;
+text-align:center;
+margin-top:40px;
+}
+
 .whatsapp{
 position:fixed;
 bottom:20px;
@@ -108,23 +90,14 @@ background:#25D366;
 color:white;
 padding:16px;
 border-radius:50px;
-font-size:22px;
 text-decoration:none;
-}
-
-/* FOOTER */
-footer{
-background:#111;
-text-align:center;
-padding:25px;
-margin-top:30px;
+font-size:22px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
 
 <img src="file_00000000987471f4bc52e2d36349cbe1.png">
@@ -135,7 +108,6 @@ margin-top:30px;
 
 </div>
 
-<!-- NAV -->
 <nav>
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
@@ -144,19 +116,16 @@ margin-top:30px;
 <a href="contact.html">Contact</a>
 </nav>
 
-<!-- CONTENT -->
 <div class="section">
 
 <div class="card">
 
 <h2>🔥 Publish Daily Blaze</h2>
 
-<p>
-Use the button below to post today's devotional through your Daily Blaze Publisher form.
-</p>
+<p>Click below to submit today's devotional.</p>
 
 <a class="btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform?usp=publish-editor"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform"
 target="_blank">
 📝 POST DAILY BLAZE
 </a>
@@ -167,38 +136,41 @@ target="_blank">
 
 <h2>Today's Daily Blaze</h2>
 
-<p><b>Topic:</b> Awaiting Today's Post</p>
-
-<p><b>Scripture:</b></p>
-
-<p>
-Today's devotional will appear here.
-</p>
-
-<p><b>Prayer:</b></p>
-
-<p><b>Declaration:</b></p>
+<div id="devotional">
+Loading today's Daily Blaze...
+</div>
 
 </div>
 
 </div>
 
-<!-- FOOTER -->
 <footer>
-
 🔥 FIRE IS OUR LIFESTYLE 🔥
-
 <br><br>
-
 © 2026 Blazing Word International
-
 </footer>
 
-<!-- WHATSAPP -->
 <a class="whatsapp"
 href="https://wa.me/2349066079452">
 💬
 </a>
+
+<script>
+fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv')
+.then(response => response.text())
+.then(data => {
+let rows = data.trim().split('\n');
+let last = rows[rows.length-1].split(',');
+
+document.getElementById('devotional').innerHTML = `
+<p><b>Topic:</b> ${last[1] || ''}</p>
+<p><b>Scripture:</b> ${last[2] || ''}</p>
+<p>${last[3] || ''}</p>
+<p><b>Prayer:</b><br>${last[4] || ''}</p>
+<p><b>Declaration:</b><br>${last[5] || ''}</p>
+`;
+});
+</script>
 
 </body>
 </html>
