@@ -1,73 +1,222 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>About - Blazing Word International</title>
+<title>About | Blazing Word International</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
 font-family:Arial,sans-serif;
 background:#0b0b0b;
 color:white;
-text-align:center;
 line-height:1.7;
 }
 
-header{
-background:#111;
-padding:20px;
+/* HEADER */
+.header{
+background:
+linear-gradient(rgba(0,0,0,.78),rgba(0,0,0,.78)),
+url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3');
+background-size:cover;
+background-position:center;
+text-align:center;
+padding:80px 20px;
 }
 
-a{
-color:#ffb300;
+.header img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:15px;
+box-shadow:0 0 20px rgba(255,140,0,.4);
+}
+
+.header h1{
+color:#ff4500;
+font-size:40px;
+}
+
+.header p{
+color:#ffcc70;
+}
+
+/* NAV */
+nav{
+background:#111;
+padding:15px;
+text-align:center;
+position:sticky;
+top:0;
+}
+
+nav a{
+color:white;
 text-decoration:none;
-margin:10px;
+margin:0 10px;
 font-weight:bold;
 }
 
+nav a:hover{
+color:#ff4500;
+}
+
+/* CONTENT */
 .section{
-padding:50px 20px;
-max-width:900px;
+max-width:950px;
 margin:auto;
+padding:60px 20px;
+text-align:center;
 }
 
 .card{
 background:#151515;
-padding:20px;
-border-radius:10px;
+padding:25px;
+border-radius:12px;
+margin-top:20px;
+}
+
+.card h2{
+color:#ff4500;
+margin-bottom:10px;
+}
+
+/* BUTTON */
+.btn{
+display:inline-block;
+background:#ff4500;
+color:white;
+text-decoration:none;
+padding:12px 20px;
+border-radius:8px;
 margin-top:15px;
+font-weight:bold;
+}
+
+/* FLOAT */
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:16px;
+border-radius:50px;
+font-size:22px;
+text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+background:#111;
+text-align:center;
+padding:25px;
+margin-top:30px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h2>About Us</h2>
+<!-- HEADER -->
+<div class="header">
+
+<img src="file_00000000987471f4bc52e2d36349cbe1.png">
+
+<h1>About Us</h1>
+
+<p>Blazing Word International | Life Abode</p>
+
+</div>
+
+<!-- NAVIGATION -->
+<nav>
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
-<a href="sermons.html">Sermons</a>
+<a href="pastor.html">Pastor</a>
+<a href="daily-blaze.html">Daily Blaze</a>
 <a href="contact.html">Contact</a>
-</header>
+</nav>
 
+<!-- ABOUT -->
 <div class="section">
 
 <div class="card">
-🔥 Blazing Word International (aka Life Abode) is a ministry raised to ignite believers with the fire of God’s Word and Spirit.
+
+<h2>Who We Are</h2>
+
+<p>
+
+Blazing Word International aka Life Abode is a ministry dedicated to raising believers on fire for God through the Word, prayer, worship and the transforming power of the Holy Spirit.
+
+</p>
+
 </div>
 
 <div class="card">
-<h3>Vision</h3>
+
+<h2>Vision</h2>
+
+<p>
+
 Raising a generation on fire for God through the Word and Spirit.
+
+</p>
+
 </div>
 
 <div class="card">
-<h3>Mission</h3>
+
+<h2>Mission</h2>
+
+<p>
+
 To disciple believers into deep intimacy with Christ and impactful kingdom living.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Our Passion</h2>
+
+<p>
+
+To spread the blazing fire of God’s Word, disciple lives and build a people rooted in truth, power and spiritual growth.
+
+</p>
+
+<a class="btn" href="daily-blaze.html">
+Read Daily Blaze
+</a>
+
 </div>
 
 </div>
+
+<!-- FOOTER -->
+<footer>
+
+🔥 FIRE IS OUR LIFESTYLE 🔥
+
+<br><br>
+
+© 2026 Blazing Word International
+
+</footer>
+
+<!-- FLOAT -->
+<a class="whatsapp"
+href="https://wa.me/2349066079452">
+💬
+</a>
 
 </body>
 </html>
