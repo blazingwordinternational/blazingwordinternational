@@ -21,7 +21,7 @@ line-height:1.8;
 /* HEADER */
 .header{
 background:
-linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.82)),
+linear-gradient(rgba(0,0,0,.80),rgba(0,0,0,.80)),
 url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65');
 background-size:cover;
 background-position:center;
@@ -34,13 +34,13 @@ width:120px;
 height:120px;
 border-radius:50%;
 object-fit:cover;
-box-shadow:0 0 20px rgba(255,140,0,.5);
 margin-bottom:15px;
+box-shadow:0 0 20px rgba(255,140,0,.4);
 }
 
 .header h1{
-font-size:40px;
 color:#ff4500;
+font-size:40px;
 }
 
 .header p{
@@ -54,7 +54,6 @@ padding:15px;
 text-align:center;
 position:sticky;
 top:0;
-z-index:999;
 }
 
 nav a{
@@ -68,7 +67,7 @@ nav a:hover{
 color:#ff4500;
 }
 
-/* CONTENT */
+/* SECTION */
 .section{
 max-width:950px;
 margin:auto;
@@ -87,54 +86,149 @@ color:#ff4500;
 margin-bottom:10px;
 }
 
+.edit-box{
+background:#2b1700;
+border:2px solid #ff4500;
+padding:25px;
+border-radius:12px;
+margin-top:20px;
+}
+
+.edit-box h2{
+color:#ffb300;
+text-align:center;
+}
+
 /* BUTTON */
 .btn{
 display:inline-block;
 background:#ff4500;
 color:white;
 text-decoration:none;
-padding:12px 22px;
+padding:12px 20px;
 border-radius:8px;
 margin-top:15px;
 font-weight:bold;
+}
+
+/* FLOAT */
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:16px;
+border-radius:50px;
+font-size:22px;
+text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+background:#111;
+text-align:center;
+padding:25px;
+margin-top:30px;
 }
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
-  <img src="https://i.imgur.com/your-logo.png" alt="logo">
-  <h1>🔥 Daily Blaze</h1>
-  <p>Blazing Word International</p>
+
+<img src="file_00000000987471f4bc52e2d36349cbe1.png">
+
+<h1>🔥 Daily Blaze</h1>
+
+<p>Blazing Word International</p>
+
 </div>
 
+<!-- NAVIGATION -->
 <nav>
-<a href="#">Home</a>
-<a href="#">About</a>
-<a href="#">Daily Blaze</a>
-<a href="#">Contact</a>
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="pastor.html">Pastor</a>
+<a href="daily-blaze.html">Daily Blaze</a>
+<a href="contact.html">Contact</a>
 </nav>
 
 <div class="section">
 
-  <div class="card">
-    <h2>🔥 Topic: Faith That Works</h2>
-    <p><b>Scripture:</b> James 2:17</p>
-    <p><b>Message:</b> Faith without works is dead. Genuine faith produces action, obedience, and results.</p>
-  </div>
+<!-- POST AREA -->
+<div class="edit-box">
 
-  <div class="card">
-    <h2>🙏 Prayer</h2>
-    <p>Lord, activate my faith to produce visible results in Jesus name. Amen.</p>
-  </div>
+<h2>🔥 POST TODAY'S BLAZE HERE 🔥</h2>
 
-  <div class="card">
-    <h2>📢 Declaration</h2>
-    <p>I walk by living faith, and my actions align with my belief in Christ.</p>
-  </div>
+<p>
+
+Every day, open ONLY this page and replace the content below.
+
+Do not search the whole website.
+
+Just change:
+Topic • Scripture • Message • Prayer • Declaration
+
+</p>
 
 </div>
+
+<!-- TODAY'S DEVOTIONAL -->
+<div class="card">
+
+<h2>Topic: Faith That Works</h2>
+
+<p>
+
+<b>Scripture:</b> James 2:17
+
+</p>
+
+<p>
+
+Faith without works is dead. Genuine faith produces action, obedience and trust in God.
+
+</p>
+
+<p>
+
+<b>Prayer:</b><br>
+
+Lord, strengthen my faith and help me walk in obedience and confidence in Your Word.
+
+</p>
+
+<p>
+
+<b>Declaration:</b><br>
+
+My faith is alive, active and producing kingdom results.
+
+</p>
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+
+🔥 FIRE IS OUR LIFESTYLE 🔥
+
+<br><br>
+
+© 2026 Blazing Word International
+
+</footer>
+
+<!-- FLOAT -->
+<a class="whatsapp"
+href="https://wa.me/2349066079452">
+💬
+</a>
 
 </body>
 </html>
