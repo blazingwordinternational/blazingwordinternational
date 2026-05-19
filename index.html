@@ -1,72 +1,122 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Blazing Word International</title>
+<title>Daily Blaze | Blazing Word International</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
+*{
 margin:0;
-font-family:Arial, sans-serif;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Arial,sans-serif;
 background:#0b0b0b;
 color:white;
-line-height:1.6;
+line-height:1.8;
 }
 
-header{
+/* HEADER */
+.header{
+background:
+linear-gradient(rgba(0,0,0,.80),rgba(0,0,0,.80)),
+url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65');
+background-size:cover;
+background-position:center;
 text-align:center;
-padding:40px 20px;
-background:linear-gradient(45deg,#ff0000,#ff9900);
+padding:80px 20px;
 }
 
-header h1{
-margin:0;
-font-size:28px;
+.header img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:15px;
+box-shadow:0 0 20px rgba(255,140,0,.4);
 }
 
+.header h1{
+font-size:40px;
+color:#ff4500;
+}
+
+.header p{
+color:#ffcc70;
+}
+
+/* NAVIGATION */
 nav{
-display:flex;
-justify-content:center;
-gap:15px;
 background:#111;
-padding:10px;
-flex-wrap:wrap;
+padding:15px;
+text-align:center;
+position:sticky;
+top:0;
+z-index:999;
 }
 
 nav a{
 color:white;
 text-decoration:none;
-font-size:14px;
-}
-
-.container{
-padding:20px;
-text-align:center;
-}
-
-.card{
-background:#1a1a1a;
-padding:20px;
-margin:15px 0;
-border-radius:10px;
-}
-
-.button{
-display:inline-block;
-margin-top:10px;
-padding:10px 15px;
-background:#ff9900;
-color:black;
-text-decoration:none;
-border-radius:5px;
+margin:0 10px;
 font-weight:bold;
 }
 
+nav a:hover{
+color:#ff4500;
+}
+
+/* SECTION */
+.section{
+max-width:950px;
+margin:auto;
+padding:60px 20px;
+}
+
+.card{
+background:#151515;
+padding:25px;
+border-radius:12px;
+margin-top:20px;
+}
+
+.card h2{
+color:#ff4500;
+margin-bottom:12px;
+}
+
+/* POST BUTTON */
+.btn{
+display:inline-block;
+background:#ff4500;
+color:white;
+text-decoration:none;
+padding:14px 22px;
+border-radius:8px;
+margin-top:15px;
+font-weight:bold;
+}
+
+/* WHATSAPP */
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:16px;
+border-radius:50px;
+font-size:22px;
+text-decoration:none;
+}
+
+/* FOOTER */
 footer{
-text-align:center;
-padding:15px;
-font-size:12px;
 background:#111;
+text-align:center;
+padding:25px;
 margin-top:30px;
 }
 </style>
@@ -74,46 +124,81 @@ margin-top:30px;
 
 <body>
 
-<header>
-<h1>🔥 Blazing Word International</h1>
-<p>aka Life Abode</p>
-<p>Raising a Generation Ablaze for Christ</p>
-</header>
+<!-- HEADER -->
+<div class="header">
 
+<img src="file_00000000987471f4bc52e2d36349cbe1.png">
+
+<h1>🔥 Daily Blaze</h1>
+
+<p>Blazing Word International</p>
+
+</div>
+
+<!-- NAV -->
 <nav>
-<a href="#">Home</a>
-<a href="#">About</a>
-<a href="#">Pastor</a>
-<a href="#">Daily Blaze</a>
-<a href="#">Contact</a>
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="pastor.html">Pastor</a>
+<a href="daily-blaze.html">Daily Blaze</a>
+<a href="contact.html">Contact</a>
 </nav>
 
-<div class="container">
+<!-- CONTENT -->
+<div class="section">
 
 <div class="card">
-<h2>Welcome</h2>
-<p>Welcome to Blazing Word International — a place of Fire, Word, Worship and Transformation where lives are ignited through God's presence.</p>
+
+<h2>🔥 Publish Daily Blaze</h2>
+
+<p>
+Use the button below to post today's devotional through your Daily Blaze Publisher form.
+</p>
+
+<a class="btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform?usp=publish-editor"
+target="_blank">
+📝 POST DAILY BLAZE
+</a>
+
 </div>
 
 <div class="card">
-<h2>📖 Daily Blaze Devotional</h2>
-<a class="button" href="#">Open Daily Blaze</a>
+
+<h2>Today's Daily Blaze</h2>
+
+<p><b>Topic:</b> Awaiting Today's Post</p>
+
+<p><b>Scripture:</b></p>
+
+<p>
+Today's devotional will appear here.
+</p>
+
+<p><b>Prayer:</b></p>
+
+<p><b>Declaration:</b></p>
+
 </div>
 
-<div class="card">
-<h2>🙏 Vision & Ministry</h2>
-<a class="button" href="#">About Ministry</a>
 </div>
 
-<div class="card">
-<h2>🔥 FIRE IS OUR LIFESTYLE 🔥</h2>
-</div>
-
-</div>
-
+<!-- FOOTER -->
 <footer>
+
+🔥 FIRE IS OUR LIFESTYLE 🔥
+
+<br><br>
+
 © 2026 Blazing Word International
+
 </footer>
+
+<!-- WHATSAPP -->
+<a class="whatsapp"
+href="https://wa.me/2349066079452">
+💬
+</a>
 
 </body>
   </html>
