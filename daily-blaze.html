@@ -21,7 +21,7 @@ line-height:1.8;
 /* HEADER */
 .header{
 background:
-linear-gradient(rgba(0,0,0,.80),rgba(0,0,0,.80)),
+linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.82)),
 url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65');
 background-size:cover;
 background-position:center;
@@ -34,13 +34,13 @@ width:120px;
 height:120px;
 border-radius:50%;
 object-fit:cover;
+box-shadow:0 0 20px rgba(255,140,0,.5);
 margin-bottom:15px;
-box-shadow:0 0 20px rgba(255,140,0,.4);
 }
 
 .header h1{
-color:#ff4500;
 font-size:40px;
+color:#ff4500;
 }
 
 .header p{
@@ -54,6 +54,7 @@ padding:15px;
 text-align:center;
 position:sticky;
 top:0;
+z-index:999;
 }
 
 nav a{
@@ -67,7 +68,7 @@ nav a:hover{
 color:#ff4500;
 }
 
-/* SECTION */
+/* CONTENT */
 .section{
 max-width:950px;
 margin:auto;
@@ -86,32 +87,19 @@ color:#ff4500;
 margin-bottom:10px;
 }
 
-.edit-box{
-background:#2b1700;
-border:2px solid #ff4500;
-padding:25px;
-border-radius:12px;
-margin-top:20px;
-}
-
-.edit-box h2{
-color:#ffb300;
-text-align:center;
-}
-
 /* BUTTON */
 .btn{
 display:inline-block;
 background:#ff4500;
 color:white;
 text-decoration:none;
-padding:12px 20px;
+padding:12px 22px;
 border-radius:8px;
 margin-top:15px;
 font-weight:bold;
 }
 
-/* FLOAT */
+/* WHATSAPP */
 .whatsapp{
 position:fixed;
 bottom:20px;
@@ -136,7 +124,6 @@ margin-top:30px;
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
 
 <img src="file_00000000987471f4bc52e2d36349cbe1.png">
@@ -147,7 +134,6 @@ margin-top:30px;
 
 </div>
 
-<!-- NAVIGATION -->
 <nav>
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
@@ -158,73 +144,52 @@ margin-top:30px;
 
 <div class="section">
 
-<!-- POST AREA -->
-<div class="edit-box">
-
-<h2>🔥 POST TODAY'S BLAZE HERE 🔥</h2>
-
-<p>
-
-Every day, open ONLY this page and replace the content below.
-
-Do not search the whole website.
-
-Just change:
-Topic • Scripture • Message • Prayer • Declaration
-
-</p>
-
-</div>
-
-<!-- TODAY'S DEVOTIONAL -->
 <div class="card">
 
-<h2>Topic: Faith That Works</h2>
+<h2>🔥 Post Today's Daily Blaze</h2>
 
 <p>
-
-<b>Scripture:</b> James 2:17
-
+Click below to publish today's devotional through the Daily Blaze Publisher form.
 </p>
 
+<a class="btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform?usp=publish-editor"
+target="_blank">
+POST DAILY BLAZE
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>Today's Daily Blaze</h2>
+
+<p><b>Topic:</b> Faith That Works</p>
+
+<p><b>Scripture:</b> James 2:17</p>
+
 <p>
-
-Faith without works is dead. Genuine faith produces action, obedience and trust in God.
-
+Faith without works is dead. Genuine faith produces obedience, action and confidence in God.
 </p>
 
-<p>
-
-<b>Prayer:</b><br>
-
+<p><b>Prayer:</b><br>
 Lord, strengthen my faith and help me walk in obedience and confidence in Your Word.
-
 </p>
 
-<p>
-
-<b>Declaration:</b><br>
-
+<p><b>Declaration:</b><br>
 My faith is alive, active and producing kingdom results.
-
 </p>
 
 </div>
 
 </div>
 
-<!-- FOOTER -->
 <footer>
-
 🔥 FIRE IS OUR LIFESTYLE 🔥
-
 <br><br>
-
 © 2026 Blazing Word International
-
 </footer>
 
-<!-- FLOAT -->
 <a class="whatsapp"
 href="https://wa.me/2349066079452">
 💬
