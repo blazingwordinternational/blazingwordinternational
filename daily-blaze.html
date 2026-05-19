@@ -88,7 +88,7 @@ margin-top:20px;
 
 .card h2{
 color:#ff4500;
-margin-bottom:12px;
+margin-bottom:15px;
 }
 
 /* BUTTON */
@@ -144,7 +144,7 @@ font-size:22px;
 
 </div>
 
-<!-- NAVIGATION -->
+<!-- NAV -->
 
 <nav>
 <a href="index.html">Home</a>
@@ -163,9 +163,7 @@ font-size:22px;
 <h2>🔥 Publish Daily Blaze</h2>
 
 <p>
-
 Click below to write and submit today's devotional.
-
 </p>
 
 <a class="btn"
@@ -183,9 +181,7 @@ target="_blank">
 <h2>Today's Daily Blaze</h2>
 
 <div id="devotional">
-
 Loading today's Daily Blaze...
-
 </div>
 
 </div>
@@ -208,54 +204,48 @@ Loading today's Daily Blaze...
 
 <a class="whatsapp"
 href="https://wa.me/2349066079452">
-
 💬
-
 </a>
 
-<!-- AUTO SHEET READER -->
+<!-- CSV READER -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
 <script>
 
-fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv')
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv";
 
-.then(response => response.text())
+Papa.parse(csvUrl, {
+download: true,
+header: true,
+complete: function(results) {
 
-.then(data => {
+let rows = results.data;
 
-let rows = data.trim().split('\n');
+if(rows.length > 0){
 
-if(rows.length > 1){
+let latest = rows[rows.length - 1];
 
-let latest = rows[rows.length-1].split(',');
+document.getElementById("devotional").innerHTML = `
 
-document.getElementById('devotional').innerHTML = `
+<p><b>Topic:</b> ${latest.Topic || ""}</p>
 
-<p><b>Topic:</b> ${latest[1] || ''}</p>
+<p><b>Scripture:</b> ${latest.Scripture || ""}</p>
 
-<p><b>Scripture:</b> ${latest[2] || ''}</p>
+<p>${latest.Message || ""}</p>
 
-<p>${latest[3] || ''}</p>
+<p><b>Prayer:</b><br>${latest.Prayer || ""}</p>
 
-<p><b>Prayer:</b><br>${latest[4] || ''}</p>
-
-<p><b>Declaration:</b><br>${latest[5] || ''}</p>
+<p><b>Declaration:</b><br>${latest.Declaration || ""}</p>
 
 `;
 
 }
 
-})
-
-.catch(error => {
-
-document.getElementById('devotional').innerHTML =
-
-'Unable to load Daily Blaze.';
-
+}
 });
 
 </script>
 
 </body>
-  </html>
+</html>
