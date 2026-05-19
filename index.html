@@ -5,32 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
+*{
 margin:0;
-font-family:Arial, sans-serif;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Arial,sans-serif;
 background:#0b0b0b;
-color:#fff;
-line-height:1.7;
+color:white;
+line-height:1.8;
 }
 
 /* HEADER */
 .header{
+background:
+linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.82)),
+url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65');
+background-size:cover;
+background-position:center;
 text-align:center;
-padding:50px 20px;
-background:linear-gradient(#111,#000);
+padding:80px 20px;
 }
 
 .header img{
-width:90px;
-height:90px;
+width:120px;
+height:120px;
 border-radius:50%;
-margin-bottom:10px;
+object-fit:cover;
+box-shadow:0 0 20px rgba(255,140,0,.5);
+margin-bottom:15px;
 }
 
 .header h1{
+font-size:40px;
 color:#ff4500;
-margin:5px 0;
-font-size:32px;
 }
 
 .header p{
@@ -39,58 +49,43 @@ color:#ffcc70;
 
 /* NAV */
 nav{
+background:#111;
+padding:15px;
 text-align:center;
-background:#1a1a1a;
-padding:12px;
 position:sticky;
 top:0;
+z-index:999;
 }
 
 nav a{
-color:#fff;
-margin:0 10px;
+color:white;
 text-decoration:none;
+margin:0 10px;
 font-weight:bold;
-font-size:14px;
 }
 
 nav a:hover{
 color:#ff4500;
 }
 
-/* CONTAINER */
-.container{
-max-width:850px;
+/* CONTENT */
+.section{
+max-width:950px;
 margin:auto;
-padding:20px;
+padding:60px 20px;
 }
 
-/* CARD */
 .card{
 background:#151515;
-padding:18px;
-margin-top:18px;
+padding:25px;
 border-radius:12px;
-box-shadow:0 0 10px rgba(0,0,0,0.4);
+margin-top:20px;
+box-shadow:0 0 10px rgba(0,0,0,.4);
 }
 
 .card h2{
 color:#ff4500;
 margin-bottom:10px;
-font-size:20px;
-}
-
-.card p{
-margin:6px 0;
-}
-
-/* FOOTER */
-.footer{
-text-align:center;
-padding:20px;
-color:#777;
-font-size:13px;
-margin-top:20px;
 }
 </style>
 </head>
@@ -98,7 +93,7 @@ margin-top:20px;
 <body>
 
 <div class="header">
-<img src="https://i.imgur.com/your-logo.png" alt="logo">
+<img src="PASTE-YOUR-REAL-LOGO-LINK-HERE" alt="logo">
 <h1>🔥 Daily Blaze</h1>
 <p>Blazing Word International</p>
 </div>
@@ -110,12 +105,12 @@ margin-top:20px;
 <a href="#">Contact</a>
 </nav>
 
-<div class="container">
+<div class="section">
 
 <div class="card">
 <h2>🔥 Topic: Faith That Works</h2>
 <p><b>Scripture:</b> James 2:17</p>
-<p>Faith without works is dead. Genuine faith produces action, obedience, and results.</p>
+<p><b>Message:</b> Faith without works is dead. Genuine faith produces action, obedience, and results.</p>
 </div>
 
 <div class="card">
@@ -128,10 +123,6 @@ margin-top:20px;
 <p>I walk by living faith, and my actions align with my belief in Christ.</p>
 </div>
 
-</div>
-
-<div class="footer">
-© 2026 Blazing Word International | Daily Blaze
 </div>
 
 </body>
