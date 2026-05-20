@@ -1,105 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Daily Blaze | Blazing Word International</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Blaze</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-
 body{
-font-family:Arial,sans-serif;
+margin:0;
+font-family:Arial, sans-serif;
 background:#0b0b0b;
-color:white;
-line-height:1.8;
+color:#fff;
 }
 
 .header{
-background:linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.82)),
-url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65');
-background-size:cover;
-background-position:center;
-text-align:center;
-padding:80px 20px;
-}
-
-.header img{
-width:120px;
-height:120px;
-border-radius:50%;
-object-fit:cover;
-margin-bottom:15px;
-box-shadow:0 0 20px rgba(255,140,0,.5);
-}
-
-.header h1{
-font-size:40px;
-color:#ff4500;
-}
-
-.header p{
-color:#ffcc70;
-}
-
-nav{
-background:#111;
+background:linear-gradient(90deg,#ff6a00,#ff2e00);
 padding:15px;
 text-align:center;
-}
-
-nav a{
-color:white;
-text-decoration:none;
-margin:0 10px;
 font-weight:bold;
 }
 
-.section{
-max-width:950px;
-margin:auto;
-padding:50px 20px;
+.container{
+padding:20px;
 }
 
 .card{
-background:#151515;
-padding:25px;
+background:#1a1a1a;
+padding:18px;
 border-radius:12px;
-margin-top:20px;
-}
-
-.card h2{
-color:#ff4500;
-margin-bottom:15px;
-}
-
-.btn{
-display:inline-block;
-background:#ff4500;
-color:white;
-padding:14px 22px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
 margin-top:15px;
+box-shadow:0 0 12px rgba(255,80,0,0.25);
 }
 
-footer{
-background:#111;
-padding:25px;
-text-align:center;
-margin-top:40px;
+.title{
+color:#ff6a00;
+font-size:20px;
+margin-bottom:10px;
+font-weight:bold;
 }
 
-.whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:16px;
-border-radius:50px;
-text-decoration:none;
-font-size:22px;
+.small{
+font-size:14px;
+opacity:0.9;
+line-height:1.6;
+}
+
+.loading{
+opacity:0.7;
 }
 </style>
 </head>
@@ -107,104 +54,70 @@ font-size:22px;
 <body>
 
 <div class="header">
-<img src="file_00000000987471f4bc52e2d36349cbe1.png">
-<h1>🔥 Daily Blaze</h1>
-<p>Blazing Word International</p>
+Today's Daily Blaze
 </div>
 
-<nav>
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="pastor.html">Pastor</a>
-<a href="daily-blaze.html">Daily Blaze</a>
-<a href="contact.html">Contact</a>
-</nav>
+<div class="container">
 
-<div class="section">
-
-<div class="card">
-<h2>🔥 Publish Daily Blaze</h2>
-
-<p>Click below to write and submit today's devotional.</p>
-
-<a class="btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform"
-target="_blank">
-📝 POST DAILY BLAZE
-</a>
-
-</div>
-
-<div class="card">
-
-<h2>Today's Daily Blaze</h2>
-
-<div id="devotional">
-Loading today's Daily Blaze...
+<div id="content" class="card loading">
+Loading Daily Blaze...
 </div>
 
 </div>
-
-</div>
-
-<footer>
-🔥 FIRE IS OUR LIFESTYLE 🔥
-<br><br>
-© 2026 Blazing Word International
-</footer>
-
-<a class="whatsapp"
-href="https://wa.me/2349066079452">
-💬
-</a>
 
 <script>
 
-const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?gid=0&single=true&output=csv";
+// ✅ YOUR GOOGLE SHEET CSV LINK
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv";
 
-fetch(csvUrl)
-.then(response => response.text())
-.then(csv => {
+fetch(sheetURL)
+.then(res => res.text())
+.then(data => {
 
-let rows = csv.trim().split('\n');
+    const rows = data.trim().split("\n");
 
-rows = rows.filter(row => row.trim() !== "");
+    // Remove header row (Timestamp, Topic, etc.)
+    const dataRows = rows.slice(1);
 
-if(rows.length > 1){
+    if (dataRows.length === 0) {
+        document.getElementById("content").innerHTML =
+        "<b>No Daily Blaze posted yet.</b>";
+        return;
+    }
 
-let latest = rows[rows.length - 1]
-.split(',');
+    // Get latest row
+    const latest = dataRows[dataRows.length - 1].split(",");
 
-document.getElementById("devotional").innerHTML = `
+    const timestamp = latest[0];
+    const topic = latest[1];
+    const scripture = latest[2];
+    const message = latest[3];
+    const declaration = latest[4];
 
-<p><b>Topic:</b> ${latest[0] || ""}</p>
+    document.getElementById("content").innerHTML = `
+        <div class="title">${topic}</div>
 
-<p><b>Scripture:</b> ${latest[1] || ""}</p>
+        <p><strong>Scripture:</strong> ${scripture}</p>
+        <p class="small"><em>${timestamp}</em></p>
 
-<p>${latest[2] || ""}</p>
+        <br>
 
-<p><b>Prayer:</b><br>${latest[3] || ""}</p>
+        <p class="small">${message}</p>
 
-<p><b>Declaration:</b><br>${latest[4] || ""}</p>
+        <br>
 
-`;
-
-}else{
-
-document.getElementById("devotional").innerHTML =
-"No Daily Blaze posted yet.";
-
-}
+        <p><strong>Declaration:</strong></p>
+        <p class="small">${declaration}</p>
+    `;
 
 })
-.catch(error => {
-
-document.getElementById("devotional").innerHTML =
-"Unable to load Daily Blaze.";
-
+.catch(err => {
+    console.log(err);
+    document.getElementById("content").innerHTML =
+    "<b>Unable to load Daily Blaze at the moment.</b>";
 });
 
 </script>
 
 </body>
-  </html>
+</html>
