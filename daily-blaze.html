@@ -1,110 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Blaze</title>
-
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#0b0b0b;
-color:#fff;
-}
-
-.header{
-background:linear-gradient(90deg,#ff6a00,#ff2e00);
-padding:15px;
-text-align:center;
-font-weight:bold;
-}
-
-.container{ padding:20px; }
-
-.card{
-background:#1a1a1a;
-padding:18px;
-border-radius:12px;
-margin-top:15px;
-}
-
-.title{
-color:#ff6a00;
-font-size:20px;
-font-weight:bold;
-margin-bottom:10px;
-}
-
-.small{
-font-size:14px;
-opacity:0.9;
-line-height:1.6;
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">Today's Daily Blaze</div>
-
-<div class="container">
-<div id="content" class="card">Loading...</div>
-</div>
-
 <script>
 
-const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pubhtml";
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?gid=0&single=true&output=csv";
 
-fetch(url)
-.then(res => res.text())
-.then(html => {
+fetch(csvUrl)
+.then(response => response.text())
+.then(csv => {
 
-    // Convert HTML string to document
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
+let rows = csv.trim().split('\n');
 
-    const rows = doc.querySelectorAll("table tr");
+rows = rows.filter(row => row.trim() !== "");
 
-    if (rows.length <= 1) {
-        document.getElementById("content").innerHTML =
-        "No Daily Blaze posted yet.";
-        return;
-    }
+if(rows.length > 1){
 
-    const lastRow = rows[rows.length - 1].querySelectorAll("td");
+let latest = rows[rows.length - 1]
+.split(',');
 
-    const timestamp = lastRow[0]?.innerText || "";
-    const topic = lastRow[1]?.innerText || "";
-    const scripture = lastRow[2]?.innerText || "";
-    const message = lastRow[3]?.innerText || "";
-    const declaration = lastRow[4]?.innerText || "";
+document.getElementById("devotional").innerHTML = `
 
-    document.getElementById("content").innerHTML = `
-        <div class="title">${topic}</div>
+<p><b>Topic:</b> ${latest[0] || ""}</p>
 
-        <p><strong>Scripture:</strong> ${scripture}</p>
+<p><b>Scripture:</b> ${latest[1] || ""}</p>
 
-        <p class="small"><em>${timestamp}</em></p>
+<p>${latest[2] || ""}</p>
 
-        <br>
+<p><b>Prayer:</b><br>${latest[3] || ""}</p>
 
-        <p class="small">${message}</p>
+<p><b>Declaration:</b><br>${latest[4] || ""}</p>
 
-        <br>
+`;
 
-        <p><strong>Declaration:</strong></p>
-        <p class="small">${declaration}</p>
-    `;
+}else{
+
+document.getElementById("devotional").innerHTML =
+"No Daily Blaze posted yet.";
+
+}
 
 })
-.catch(err => {
-    console.log(err);
-    document.getElementById("content").innerHTML =
-    "Unable to load Daily Blaze at the moment.";
+.catch(error => {
+
+document.getElementById("devotional").innerHTML =
+"Unable to load Daily Blaze.";
+
 });
 
 </script>
-
-</body>
-</html>
