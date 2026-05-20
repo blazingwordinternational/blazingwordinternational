@@ -163,36 +163,45 @@ href="https://wa.me/2349066079452">
 const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?gid=0&single=true&output=csv";
 
 fetch(csvUrl)
-.then(r=>r.text())
-.then(text=>{
+.then(response => response.text())
+.then(csv => {
 
-let rows=text.trim().split('\n');
+let rows = csv.trim().split('\n');
 
-if(rows.length>1){
+rows = rows.filter(row => row.trim() !== "");
 
-let latest=rows[rows.length-1]
+if(rows.length > 1){
+
+let latest = rows[rows.length - 1]
 .split(',');
 
-document.getElementById('devotional').innerHTML=`
+document.getElementById("devotional").innerHTML = `
 
-<p><b>Topic:</b> ${latest[0]||''}</p>
+<p><b>Topic:</b> ${latest[0] || ""}</p>
 
-<p><b>Scripture:</b> ${latest[1]||''}</p>
+<p><b>Scripture:</b> ${latest[1] || ""}</p>
 
-<p>${latest[2]||''}</p>
+<p>${latest[2] || ""}</p>
 
-<p><b>Prayer:</b><br>${latest[3]||''}</p>
+<p><b>Prayer:</b><br>${latest[3] || ""}</p>
 
-<p><b>Declaration:</b><br>${latest[4]||''}</p>
+<p><b>Declaration:</b><br>${latest[4] || ""}</p>
 
 `;
+
+}else{
+
+document.getElementById("devotional").innerHTML =
+"No Daily Blaze posted yet.";
 
 }
 
 })
-.catch(()=>{
-document.getElementById('devotional').innerHTML=
-"Daily Blaze unavailable.";
+.catch(error => {
+
+document.getElementById("devotional").innerHTML =
+"Unable to load Daily Blaze.";
+
 });
 
 </script>
