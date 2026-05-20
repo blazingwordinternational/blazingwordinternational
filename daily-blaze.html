@@ -185,25 +185,26 @@ Papa.parse(
 {
 download:true,
 header:true,
+skipEmptyLines:true,
 complete:function(results){
 
 let rows = results.data;
 
-if(rows.length>0){
+if(rows.length > 0){
 
-let latest = rows[rows.length-1];
+let latest = rows[rows.length - 1];
 
 document.getElementById('devotional').innerHTML = `
 
-<p><b>Topic:</b> ${latest["Topic"] || ""}</p>
+<p><b>Topic:</b> ${latest['Topic'] || ''}</p>
 
-<p><b>Scripture:</b> ${latest["Scripture"] || ""}</p>
+<p><b>Scripture:</b> ${latest['Scripture'] || ''}</p>
 
-<p>${latest["Message"] || ""}</p>
+<p>${latest['Message'] || ''}</p>
 
-<p><b>Prayer:</b><br>${latest["Prayer"] || ""}</p>
+<p><b>Prayer:</b><br>${latest['Prayer'] || ''}</p>
 
-<p><b>Declaration:</b><br>${latest["Declaration/Affirmation"] || ""}</p>
+<p><b>Declaration:</b><br>${latest['Declaration/Affirmation'] || ''}</p>
 
 `;
 
