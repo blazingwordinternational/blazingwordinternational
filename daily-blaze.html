@@ -18,6 +18,7 @@ background:linear-gradient(90deg,#ff6a00,#ff2e00);
 padding:15px;
 text-align:center;
 font-weight:bold;
+font-size:18px;
 }
 
 .container{
@@ -35,8 +36,8 @@ box-shadow:0 0 12px rgba(255,80,0,0.25);
 .title{
 color:#ff6a00;
 font-size:20px;
-margin-bottom:10px;
 font-weight:bold;
+margin-bottom:10px;
 }
 
 .small{
@@ -67,37 +68,38 @@ Loading Daily Blaze...
 
 <script>
 
-// ✅ YOUR GOOGLE SHEET CSV LINK
+// ✅ GOOGLE SHEET CSV LINK (YOUR LINK)
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv";
 
 fetch(sheetURL)
 .then(res => res.text())
 .then(data => {
 
-    const rows = data.trim().split("\n");
+    const rows = data.trim().split("\n").filter(r => r);
 
-    // Remove header row (Timestamp, Topic, etc.)
-    const dataRows = rows.slice(1);
-
-    if (dataRows.length === 0) {
+    if (rows.length <= 1) {
         document.getElementById("content").innerHTML =
         "<b>No Daily Blaze posted yet.</b>";
         return;
     }
 
-    // Get latest row
-    const latest = dataRows[dataRows.length - 1].split(",");
+    // Get last row (latest entry)
+    const lastRow = rows[rows.length - 1];
 
-    const timestamp = latest[0];
-    const topic = latest[1];
-    const scripture = latest[2];
-    const message = latest[3];
-    const declaration = latest[4];
+    // Safe CSV parser (fixes undefined issue)
+    const cols = parseCSV(lastRow);
+
+    const timestamp = cols[0] || "";
+    const topic = cols[1] || "No Topic";
+    const scripture = cols[2] || "No Scripture";
+    const message = cols[3] || "No Message Available";
+    const declaration = cols[4] || "No Declaration Available";
 
     document.getElementById("content").innerHTML = `
         <div class="title">${topic}</div>
 
         <p><strong>Scripture:</strong> ${scripture}</p>
+
         <p class="small"><em>${timestamp}</em></p>
 
         <br>
@@ -116,6 +118,31 @@ fetch(sheetURL)
     document.getElementById("content").innerHTML =
     "<b>Unable to load Daily Blaze at the moment.</b>";
 });
+
+
+// ✅ SAFE CSV PARSER (CRITICAL FIX)
+function parseCSV(row){
+    let result = [];
+    let current = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < row.length; i++) {
+        let char = row[i];
+
+        if (char === '"') {
+            inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+            result.push(current);
+            current = "";
+        } else {
+            current += char;
+        }
+    }
+
+    result.push(current);
+
+    return result.map(v => v.replace(/"/g, "").trim());
+}
 
 </script>
 
