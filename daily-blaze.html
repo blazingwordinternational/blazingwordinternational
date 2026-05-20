@@ -45,10 +45,6 @@ font-size:14px;
 opacity:0.9;
 line-height:1.6;
 }
-
-.loading{
-opacity:0.7;
-}
 </style>
 </head>
 
@@ -60,7 +56,7 @@ Today's Daily Blaze
 
 <div class="container">
 
-<div id="content" class="card loading">
+<div id="content" class="card">
 Loading Daily Blaze...
 </div>
 
@@ -68,7 +64,6 @@ Loading Daily Blaze...
 
 <script>
 
-// ✅ GOOGLE SHEET CSV LINK (YOUR LINK)
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv";
 
 fetch(sheetURL)
@@ -77,23 +72,26 @@ fetch(sheetURL)
 
     const rows = data.trim().split("\n").filter(r => r);
 
-    if (rows.length <= 1) {
+    if (rows.length < 2) {
         document.getElementById("content").innerHTML =
         "<b>No Daily Blaze posted yet.</b>";
         return;
     }
 
-    // Get last row (latest entry)
-    const lastRow = rows[rows.length - 1];
+    const headers = parseCSV(rows[0]);
+    const lastRow = parseCSV(rows[rows.length - 1]);
 
-    // Safe CSV parser (fixes undefined issue)
-    const cols = parseCSV(lastRow);
+    // Convert to object using headers (IMPORTANT FIX)
+    let entry = {};
+    headers.forEach((h, i) => {
+        entry[h.toLowerCase()] = lastRow[i];
+    });
 
-    const timestamp = cols[0] || "";
-    const topic = cols[1] || "No Topic";
-    const scripture = cols[2] || "No Scripture";
-    const message = cols[3] || "No Message Available";
-    const declaration = cols[4] || "No Declaration Available";
+    const topic = entry.topic || "";
+    const scripture = entry.scripture || "";
+    const message = entry.message || "";
+    const declaration = entry.declaration || "";
+    const timestamp = entry.timestamp || "";
 
     document.getElementById("content").innerHTML = `
         <div class="title">${topic}</div>
@@ -120,7 +118,7 @@ fetch(sheetURL)
 });
 
 
-// ✅ SAFE CSV PARSER (CRITICAL FIX)
+// ✅ SAFE CSV PARSER
 function parseCSV(row){
     let result = [];
     let current = "";
