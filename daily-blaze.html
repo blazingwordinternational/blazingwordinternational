@@ -20,9 +20,7 @@ text-align:center;
 font-weight:bold;
 }
 
-.container{
-padding:20px;
-}
+.container{ padding:20px; }
 
 .card{
 background:#1a1a1a;
@@ -56,32 +54,31 @@ line-height:1.6;
 
 <script>
 
-// ✅ USE GOOGLE SHEETS JSON API (THIS WORKS)
-const sheetID = "2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI";
-
-const url = `https://docs.google.com/spreadsheets/d/e/${sheetID}/gviz/tq?tqx=out:json`;
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pubhtml";
 
 fetch(url)
 .then(res => res.text())
-.then(text => {
+.then(html => {
 
-    const json = JSON.parse(text.substring(47).slice(0, -2));
+    // Convert HTML string to document
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
 
-    const rows = json.table.rows;
+    const rows = doc.querySelectorAll("table tr");
 
-    if (!rows || rows.length === 0) {
+    if (rows.length <= 1) {
         document.getElementById("content").innerHTML =
         "No Daily Blaze posted yet.";
         return;
     }
 
-    const last = rows[rows.length - 1].c;
+    const lastRow = rows[rows.length - 1].querySelectorAll("td");
 
-    const timestamp = last[0]?.v || "";
-    const topic = last[1]?.v || "";
-    const scripture = last[2]?.v || "";
-    const message = last[3]?.v || "";
-    const declaration = last[4]?.v || "";
+    const timestamp = lastRow[0]?.innerText || "";
+    const topic = lastRow[1]?.innerText || "";
+    const scripture = lastRow[2]?.innerText || "";
+    const message = lastRow[3]?.innerText || "";
+    const declaration = lastRow[4]?.innerText || "";
 
     document.getElementById("content").innerHTML = `
         <div class="title">${topic}</div>
