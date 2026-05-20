@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -18,8 +17,6 @@ background:#0b0b0b;
 color:white;
 line-height:1.8;
 }
-
-/* HEADER */
 
 .header{
 background:
@@ -49,15 +46,10 @@ color:#ff4500;
 color:#ffcc70;
 }
 
-/* NAV */
-
 nav{
 background:#111;
 padding:15px;
 text-align:center;
-position:sticky;
-top:0;
-z-index:999;
 }
 
 nav a{
@@ -66,12 +58,6 @@ text-decoration:none;
 margin:0 10px;
 font-weight:bold;
 }
-
-nav a:hover{
-color:#ff4500;
-}
-
-/* CONTENT */
 
 .section{
 max-width:950px;
@@ -91,8 +77,6 @@ color:#ff4500;
 margin-bottom:15px;
 }
 
-/* BUTTON */
-
 .btn{
 display:inline-block;
 background:#ff4500;
@@ -100,11 +84,9 @@ color:white;
 padding:14px 22px;
 border-radius:8px;
 text-decoration:none;
-margin-top:15px;
 font-weight:bold;
+margin-top:15px;
 }
-
-/* FOOTER */
 
 footer{
 background:#111;
@@ -112,8 +94,6 @@ padding:25px;
 text-align:center;
 margin-top:40px;
 }
-
-/* WHATSAPP */
 
 .whatsapp{
 position:fixed;
@@ -126,13 +106,10 @@ border-radius:50px;
 text-decoration:none;
 font-size:22px;
 }
-
 </style>
 </head>
 
 <body>
-
-<!-- HEADER -->
 
 <div class="header">
 
@@ -144,8 +121,6 @@ font-size:22px;
 
 </div>
 
-<!-- NAV -->
-
 <nav>
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
@@ -153,8 +128,6 @@ font-size:22px;
 <a href="daily-blaze.html">Daily Blaze</a>
 <a href="contact.html">Contact</a>
 </nav>
-
-<!-- CONTENT -->
 
 <div class="section">
 
@@ -169,9 +142,7 @@ Click below to write and submit today's devotional.
 <a class="btn"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform"
 target="_blank">
-
 📝 POST DAILY BLAZE
-
 </a>
 
 </div>
@@ -181,14 +152,14 @@ target="_blank">
 <h2>Today's Daily Blaze</h2>
 
 <div id="devotional">
+
 Loading today's Daily Blaze...
-</div>
 
 </div>
 
 </div>
 
-<!-- FOOTER -->
+</div>
 
 <footer>
 
@@ -200,43 +171,39 @@ Loading today's Daily Blaze...
 
 </footer>
 
-<!-- WHATSAPP -->
-
 <a class="whatsapp"
 href="https://wa.me/2349066079452">
 💬
 </a>
 
-<!-- CSV READER -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
 <script>
 
-const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv";
-
-Papa.parse(csvUrl, {
-download: true,
-header: true,
-complete: function(results) {
+Papa.parse(
+'https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv',
+{
+download:true,
+header:true,
+complete:function(results){
 
 let rows = results.data;
 
-if(rows.length > 0){
+if(rows.length>0){
 
-let latest = rows[rows.length - 1];
+let latest = rows[rows.length-1];
 
-document.getElementById("devotional").innerHTML = `
+document.getElementById('devotional').innerHTML = `
 
-<p><b>Topic:</b> ${latest.Topic || ""}</p>
+<p><b>Topic:</b> ${latest["Topic"] || ""}</p>
 
-<p><b>Scripture:</b> ${latest.Scripture || ""}</p>
+<p><b>Scripture:</b> ${latest["Scripture"] || ""}</p>
 
-<p>${latest.Message || ""}</p>
+<p>${latest["Message"] || ""}</p>
 
-<p><b>Prayer:</b><br>${latest.Prayer || ""}</p>
+<p><b>Prayer:</b><br>${latest["Prayer"] || ""}</p>
 
-<p><b>Declaration:</b><br>${latest.Declaration || ""}</p>
+<p><b>Declaration:</b><br>${latest["Declaration/Affirmation"] || ""}</p>
 
 `;
 
