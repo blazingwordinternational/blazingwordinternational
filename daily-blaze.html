@@ -15,8 +15,7 @@ line-height:1.8;
 }
 
 .header{
-background:
-linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.82)),
+background:linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.82)),
 url('https://images.unsplash.com/photo-1504052434569-70ad5836ab65');
 background-size:cover;
 background-position:center;
@@ -161,42 +160,39 @@ href="https://wa.me/2349066079452">
 
 <script>
 
-fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv")
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?gid=0&single=true&output=csv";
 
-.then(response => response.text())
+fetch(csvUrl)
+.then(r=>r.text())
+.then(text=>{
 
-.then(csv => {
+let rows=text.trim().split('\n');
 
-let rows = csv.trim().split("\n");
+if(rows.length>1){
 
-if(rows.length > 1){
+let latest=rows[rows.length-1]
+.split(',');
 
-let latest = rows[rows.length-1]
-.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+document.getElementById('devotional').innerHTML=`
 
-document.getElementById("devotional").innerHTML = `
+<p><b>Topic:</b> ${latest[0]||''}</p>
 
-<p><b>Topic:</b> ${latest[0] || ""}</p>
+<p><b>Scripture:</b> ${latest[1]||''}</p>
 
-<p><b>Scripture:</b> ${latest[1] || ""}</p>
+<p>${latest[2]||''}</p>
 
-<p>${latest[2] || ""}</p>
+<p><b>Prayer:</b><br>${latest[3]||''}</p>
 
-<p><b>Prayer:</b><br>${latest[3] || ""}</p>
-
-<p><b>Declaration:</b><br>${latest[4] || ""}</p>
+<p><b>Declaration:</b><br>${latest[4]||''}</p>
 
 `;
 
 }
 
 })
-
-.catch(error => {
-
-document.getElementById("devotional").innerHTML =
-"Unable to load Daily Blaze.";
-
+.catch(()=>{
+document.getElementById('devotional').innerHTML=
+"Daily Blaze unavailable.";
 });
 
 </script>
