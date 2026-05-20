@@ -8,7 +8,7 @@
 <style>
 body{
 margin:0;
-font-family:Arial, sans-serif;
+font-family:Arial;
 background:#0b0b0b;
 color:#fff;
 }
@@ -18,19 +18,15 @@ background:linear-gradient(90deg,#ff6a00,#ff2e00);
 padding:15px;
 text-align:center;
 font-weight:bold;
-font-size:18px;
 }
 
-.container{
-padding:20px;
-}
+.container{ padding:20px; }
 
 .card{
 background:#1a1a1a;
 padding:18px;
 border-radius:12px;
 margin-top:15px;
-box-shadow:0 0 12px rgba(255,80,0,0.25);
 }
 
 .title{
@@ -40,80 +36,60 @@ font-weight:bold;
 margin-bottom:10px;
 }
 
-.small{
-font-size:14px;
-opacity:0.9;
-line-height:1.6;
-}
+.small{ font-size:14px; opacity:0.9; line-height:1.6; }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-Today's Daily Blaze
-</div>
+<div class="header">Today's Daily Blaze</div>
 
 <div class="container">
-
-<div id="content" class="card">
-Loading Daily Blaze...
+<div id="content" class="card">Loading...</div>
 </div>
 
-</div>
+<!-- ✅ TABLETOP JS (FIXES EVERYTHING) -->
+<script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.0/tabletop.min.js"></script>
 
 <script>
 
-const sheetID = "2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI";
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pubhtml";
 
-// 🔥 MUCH MORE RELIABLE THAN CSV
-const url = `https://docs.google.com/spreadsheets/d/e/${sheetID}/gviz/tq?tqx=out:json`;
+Tabletop.init({
+  key: sheetURL,
+  simpleSheet: true,
+  callback: function(data) {
 
-fetch(url)
-.then(res => res.text())
-.then(text => {
-
-    // Clean Google weird response
-    const json = JSON.parse(text.substr(47).slice(0, -2));
-
-    const rows = json.table.rows;
-
-    if (!rows || rows.length === 0) {
-        document.getElementById("content").innerHTML =
-        "<b>No Daily Blaze posted yet.</b>";
-        return;
+    if (!data || data.length === 0) {
+      document.getElementById("content").innerHTML =
+      "No Daily Blaze posted yet.";
+      return;
     }
 
-    const last = rows[rows.length - 1].c;
-
-    const timestamp = last[0]?.v || "";
-    const topic = last[1]?.v || "";
-    const scripture = last[2]?.v || "";
-    const message = last[3]?.v || "";
-    const declaration = last[4]?.v || "";
+    const latest = data[data.length - 1];
 
     document.getElementById("content").innerHTML = `
-        <div class="title">${topic}</div>
+      <div class="title">${latest.Topic || ""}</div>
 
-        <p><strong>Scripture:</strong> ${scripture}</p>
+      <p><strong>Scripture:</strong> ${latest.Scripture || ""}</p>
 
-        <p class="small"><em>${timestamp}</em></p>
+      <p class="small">${latest.Timestamp || ""}</p>
 
-        <br>
+      <br>
 
-        <p class="small">${message}</p>
+      <p class="small">${latest.Message || ""}</p>
 
-        <br>
+      <br>
 
-        <p><strong>Declaration:</strong></p>
-        <p class="small">${declaration}</p>
+      <p><strong>Declaration:</strong></p>
+      <p class="small">${latest.Declaration || ""}</p>
     `;
 
-})
-.catch(err => {
-    console.log(err);
+  },
+  error: function() {
     document.getElementById("content").innerHTML =
-    "<b>Unable to load Daily Blaze at the moment.</b>";
+    "Unable to load Daily Blaze at the moment.";
+  }
 });
 
 </script>
