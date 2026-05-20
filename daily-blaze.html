@@ -5,11 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
 font-family:Arial,sans-serif;
@@ -112,13 +108,9 @@ font-size:22px;
 <body>
 
 <div class="header">
-
 <img src="file_00000000987471f4bc52e2d36349cbe1.png">
-
 <h1>🔥 Daily Blaze</h1>
-
 <p>Blazing Word International</p>
-
 </div>
 
 <nav>
@@ -132,12 +124,9 @@ font-size:22px;
 <div class="section">
 
 <div class="card">
-
 <h2>🔥 Publish Daily Blaze</h2>
 
-<p>
-Click below to write and submit today's devotional.
-</p>
+<p>Click below to write and submit today's devotional.</p>
 
 <a class="btn"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform"
@@ -152,9 +141,7 @@ target="_blank">
 <h2>Today's Daily Blaze</h2>
 
 <div id="devotional">
-
 Loading today's Daily Blaze...
-
 </div>
 
 </div>
@@ -162,13 +149,9 @@ Loading today's Daily Blaze...
 </div>
 
 <footer>
-
 🔥 FIRE IS OUR LIFESTYLE 🔥
-
 <br><br>
-
 © 2026 Blazing Word International
-
 </footer>
 
 <a class="whatsapp"
@@ -176,44 +159,47 @@ href="https://wa.me/2349066079452">
 💬
 </a>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
 <script>
 
-Papa.parse(
-'https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv',
-{
-download:true,
-header:true,
-skipEmptyLines:true,
-complete:function(results){
+fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv")
 
-let rows = results.data;
+.then(response => response.text())
 
-if(rows.length > 0){
+.then(csv => {
 
-let latest = rows[rows.length - 1];
+let rows = csv.trim().split("\n");
 
-document.getElementById('devotional').innerHTML = `
+if(rows.length > 1){
 
-<p><b>Topic:</b> ${latest['Topic'] || ''}</p>
+let latest = rows[rows.length-1]
+.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
-<p><b>Scripture:</b> ${latest['Scripture'] || ''}</p>
+document.getElementById("devotional").innerHTML = `
 
-<p>${latest['Message'] || ''}</p>
+<p><b>Topic:</b> ${latest[0] || ""}</p>
 
-<p><b>Prayer:</b><br>${latest['Prayer'] || ''}</p>
+<p><b>Scripture:</b> ${latest[1] || ""}</p>
 
-<p><b>Declaration:</b><br>${latest['Declaration/Affirmation'] || ''}</p>
+<p>${latest[2] || ""}</p>
+
+<p><b>Prayer:</b><br>${latest[3] || ""}</p>
+
+<p><b>Declaration:</b><br>${latest[4] || ""}</p>
 
 `;
 
 }
 
-}
+})
+
+.catch(error => {
+
+document.getElementById("devotional").innerHTML =
+"Unable to load Daily Blaze.";
+
 });
 
 </script>
 
 </body>
-</html>
+  </html>
