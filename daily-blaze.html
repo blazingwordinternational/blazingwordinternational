@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -114,6 +115,7 @@ font-size:22px;
 <div class="section">
 
 <div class="card">
+
 <h2>🔥 Publish Daily Blaze</h2>
 
 <p>Click below to submit today's devotional.</p>
@@ -125,13 +127,14 @@ target="_blank">
 📝 POST DAILY BLAZE
 
 </a>
+
 </div>
 
 <div class="card">
 
 <h2>Today's Daily Blaze</h2>
 
-<div id="devotional">
+<div id="content">
 
 Loading today's Daily Blaze...
 
@@ -153,26 +156,52 @@ Loading today's Daily Blaze...
 
 <a class="whatsapp"
 href="https://wa.me/2349066079452">
-
 💬
-
 </a>
 
 <script>
 
-document.getElementById("devotional").innerHTML = `
-<p><b>Topic:</b> Awaiting Today's Post</p>
+const apiURL = "https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
 
-<p><b>Scripture:</b></p>
+fetch(apiURL)
+.then(res => res.json())
+.then(data => {
 
-<p>Today's devotional will appear here.</p>
+if(!data || data.length === 0){
 
-<p><b>Prayer:</b></p>
+document.getElementById("content").innerHTML =
+"No Daily Blaze posted yet.";
 
-<p><b>Declaration:</b></p>
+return;
+}
+
+const latest = data[data.length - 1];
+
+document.getElementById("content").innerHTML = `
+
+<h3>${latest.Topic || ""}</h3>
+
+<p><strong>Scripture:</strong> ${latest.Scripture || ""}</p>
+
+<p>${latest.Message || ""}</p>
+
+<p><strong>Prayer:</strong><br>
+${latest.Prayer || ""}</p>
+
+<p><strong>Declaration/Affirmation:</strong><br>
+${latest["Declaration/Affirmation"] || ""}</p>
+
 `;
+
+})
+.catch(err => {
+
+document.getElementById("content").innerHTML =
+"Unable to load Daily Blaze at the moment.";
+
+});
 
 </script>
 
 </body>
-  </html>
+</html>
