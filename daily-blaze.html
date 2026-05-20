@@ -1,47 +1,178 @@
-<script>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Daily Blaze | Blazing Word International</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?gid=0&single=true&output=csv";
-
-fetch(csvUrl)
-.then(response => response.text())
-.then(csv => {
-
-let rows = csv.trim().split('\n');
-
-rows = rows.filter(row => row.trim() !== "");
-
-if(rows.length > 1){
-
-let latest = rows[rows.length - 1]
-.split(',');
-
-document.getElementById("devotional").innerHTML = `
-
-<p><b>Topic:</b> ${latest[0] || ""}</p>
-
-<p><b>Scripture:</b> ${latest[1] || ""}</p>
-
-<p>${latest[2] || ""}</p>
-
-<p><b>Prayer:</b><br>${latest[3] || ""}</p>
-
-<p><b>Declaration:</b><br>${latest[4] || ""}</p>
-
-`;
-
-}else{
-
-document.getElementById("devotional").innerHTML =
-"No Daily Blaze posted yet.";
-
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-})
-.catch(error => {
+body{
+font-family:Arial,sans-serif;
+background:#0b0b0b;
+color:white;
+line-height:1.8;
+}
 
-document.getElementById("devotional").innerHTML =
-"Unable to load Daily Blaze.";
+.header{
+background:#111;
+text-align:center;
+padding:60px 20px;
+}
 
-});
+.header h1{
+color:#ff4500;
+font-size:38px;
+}
+
+.header p{
+color:#ffcc70;
+}
+
+nav{
+background:#1a1a1a;
+padding:15px;
+text-align:center;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin:0 10px;
+font-weight:bold;
+}
+
+.section{
+max-width:900px;
+margin:auto;
+padding:40px 20px;
+}
+
+.card{
+background:#151515;
+padding:25px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.card h2{
+color:#ff4500;
+margin-bottom:15px;
+}
+
+.btn{
+display:inline-block;
+background:#ff4500;
+color:white;
+padding:14px 22px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+margin-top:10px;
+}
+
+footer{
+background:#111;
+padding:25px;
+text-align:center;
+margin-top:40px;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:15px;
+border-radius:50%;
+text-decoration:none;
+font-size:22px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>🔥 Daily Blaze</h1>
+<p>Blazing Word International</p>
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="pastor.html">Pastor</a>
+<a href="daily-blaze.html">Daily Blaze</a>
+<a href="contact.html">Contact</a>
+</nav>
+
+<div class="section">
+
+<div class="card">
+<h2>🔥 Publish Daily Blaze</h2>
+
+<p>Click below to submit today's devotional.</p>
+
+<a class="btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform"
+target="_blank">
+
+📝 POST DAILY BLAZE
+
+</a>
+</div>
+
+<div class="card">
+
+<h2>Today's Daily Blaze</h2>
+
+<div id="devotional">
+
+Loading today's Daily Blaze...
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+🔥 FIRE IS OUR LIFESTYLE 🔥
+
+<br><br>
+
+© 2026 Blazing Word International
+
+</footer>
+
+<a class="whatsapp"
+href="https://wa.me/2349066079452">
+
+💬
+
+</a>
+
+<script>
+
+document.getElementById("devotional").innerHTML = `
+<p><b>Topic:</b> Awaiting Today's Post</p>
+
+<p><b>Scripture:</b></p>
+
+<p>Today's devotional will appear here.</p>
+
+<p><b>Prayer:</b></p>
+
+<p><b>Declaration:</b></p>
+`;
 
 </script>
+
+</body>
+  </html>
