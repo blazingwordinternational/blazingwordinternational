@@ -64,34 +64,33 @@ Loading Daily Blaze...
 
 <script>
 
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI/pub?output=csv";
+const sheetID = "2PACX-1vQN4Ns8eFCua6ysaVsl_emP9bUo-wOAwo5scj1mhNJ8Yd6fI6zBabB1b1qOooKKHi6yklBZ8YHJRjnI";
 
-fetch(sheetURL)
+// 🔥 MUCH MORE RELIABLE THAN CSV
+const url = `https://docs.google.com/spreadsheets/d/e/${sheetID}/gviz/tq?tqx=out:json`;
+
+fetch(url)
 .then(res => res.text())
-.then(data => {
+.then(text => {
 
-    const rows = data.trim().split("\n").filter(r => r);
+    // Clean Google weird response
+    const json = JSON.parse(text.substr(47).slice(0, -2));
 
-    if (rows.length < 2) {
+    const rows = json.table.rows;
+
+    if (!rows || rows.length === 0) {
         document.getElementById("content").innerHTML =
         "<b>No Daily Blaze posted yet.</b>";
         return;
     }
 
-    const headers = parseCSV(rows[0]);
-    const lastRow = parseCSV(rows[rows.length - 1]);
+    const last = rows[rows.length - 1].c;
 
-    // Convert to object using headers (IMPORTANT FIX)
-    let entry = {};
-    headers.forEach((h, i) => {
-        entry[h.toLowerCase()] = lastRow[i];
-    });
-
-    const topic = entry.topic || "";
-    const scripture = entry.scripture || "";
-    const message = entry.message || "";
-    const declaration = entry.declaration || "";
-    const timestamp = entry.timestamp || "";
+    const timestamp = last[0]?.v || "";
+    const topic = last[1]?.v || "";
+    const scripture = last[2]?.v || "";
+    const message = last[3]?.v || "";
+    const declaration = last[4]?.v || "";
 
     document.getElementById("content").innerHTML = `
         <div class="title">${topic}</div>
@@ -116,31 +115,6 @@ fetch(sheetURL)
     document.getElementById("content").innerHTML =
     "<b>Unable to load Daily Blaze at the moment.</b>";
 });
-
-
-// ✅ SAFE CSV PARSER
-function parseCSV(row){
-    let result = [];
-    let current = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < row.length; i++) {
-        let char = row[i];
-
-        if (char === '"') {
-            inQuotes = !inQuotes;
-        } else if (char === ',' && !inQuotes) {
-            result.push(current);
-            current = "";
-        } else {
-            current += char;
-        }
-    }
-
-    result.push(current);
-
-    return result.map(v => v.replace(/"/g, "").trim());
-}
 
 </script>
 
