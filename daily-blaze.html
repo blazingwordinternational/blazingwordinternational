@@ -179,16 +179,14 @@ const latest = data[data.length-1];
 
 document.getElementById("content").innerHTML = `
 
-${latest["Header"] || ""}
+${latest["Header:"] || latest["Header"] || ""}
 
 ${latest["Topic:"] || ""}
 
-📖 Scripture:
 ${latest["Scripture:"] || ""}
 
 ${latest["Message:"] || ""}
 
-🙏 Prayer:
 ${latest["Prayer:"] || ""}
 
 ${latest["Declaration/Affirmation "] || ""}
