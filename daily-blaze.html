@@ -134,6 +134,7 @@ font-size:22px;
 <div class="section">
 
 <div class="card">
+
 <h2>🔥 Publish Daily Blaze</h2>
 
 <p>Click below to submit today's devotional.</p>
@@ -149,6 +150,7 @@ target="_blank">
 </div>
 
 <div class="card">
+
 <h2>Today's Daily Blaze</h2>
 
 <div id="content">
@@ -158,6 +160,7 @@ Loading today's Daily Blaze...
 </div>
 
 <div class="card">
+
 <h2>📚 Previous Devotionals</h2>
 
 <div id="archive">
@@ -237,7 +240,7 @@ let archiveHTML = "";
 for(let i=devotionals.length-2;i>=0;i--){
 
 archiveHTML +=
-'<div class="archive-item" onclick="displayDevotional(devotionals['+i+'])">' +
+'<div class="archive-item" data-index="'+i+'">' +
 '📖 ' +
 (devotionals[i]["Topic:"] || "Untitled Devotional") +
 '</div>';
@@ -246,6 +249,22 @@ archiveHTML +=
 
 document.getElementById("archive").innerHTML =
 archiveHTML || "No previous devotionals.";
+
+document.querySelectorAll(".archive-item")
+.forEach(function(item){
+
+item.addEventListener("click",function(){
+
+let index =
+this.getAttribute("data-index");
+
+displayDevotional(
+devotionals[index]
+);
+
+});
+
+});
 
 })
 .catch(function(error){
@@ -261,4 +280,4 @@ document.getElementById("archive").innerHTML =
 </script>
 
 </body>
-  </html>
+</html>
