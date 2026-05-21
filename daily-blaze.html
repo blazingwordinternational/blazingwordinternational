@@ -6,11 +6,7 @@
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
 font-family:Georgia,serif;
@@ -82,15 +78,16 @@ font-size:18px;
 line-height:2;
 }
 
-#archive a{
+.archive-item{
 display:block;
 color:#ffcc70;
 text-decoration:none;
-padding:10px 0;
+padding:12px 0;
 border-bottom:1px solid #333;
+cursor:pointer;
 }
 
-#archive a:hover{
+.archive-item:hover{
 color:#ff4500;
 }
 
@@ -135,13 +132,14 @@ font-size:22px;
 
 <div class="card">
 <h2>🔥 Publish Daily Blaze</h2>
-
 <p>Click below to submit today's devotional.</p>
 
 <a class="btn"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform"
 target="_blank">
+
 📝 POST DAILY BLAZE
+
 </a>
 </div>
 
@@ -177,9 +175,11 @@ href="https://wa.me/2349066079452">
 const apiURL =
 "https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
 
+let devotionals = [];
+
 fetch(apiURL)
-.then(res=>res.json())
-.then(data=>{
+.then(res => res.json())
+.then(data => {
 
 if(!data || data.length===0){
 document.getElementById("content").innerHTML =
@@ -187,7 +187,11 @@ document.getElementById("content").innerHTML =
 return;
 }
 
-function showDevotional(item){
+devotionals = data;
+
+function showDevotional(index){
+
+const item = devotionals[index];
 
 document.getElementById("content").innerHTML = `
 
@@ -205,25 +209,30 @@ ${item["Declaration/Affirmation "] || ""}
 
 `;
 
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
 }
 
-const latest = data[data.length-1];
-showDevotional(latest);
+window.showDevotional = showDevotional;
+
+showDevotional(data.length-1);
 
 let archiveHTML = "";
 
-for(let i=data.length-2; i>=0; i--){
-
-const topic =
-data[i]["Topic:"] || "Untitled Devotional";
+for(let i=data.length-2;i>=0;i--){
 
 archiveHTML += `
-<a href="#"
-onclick='showDevotional(${JSON.stringify(data[i])}); return false;'>
 
-📖 ${topic}
+<div class="archive-item"
+onclick="showDevotional(${i})">
 
-</a>
+📖 ${data[i]["Topic:"] || "Untitled Devotional"}
+
+</div>
+
 `;
 
 }
@@ -232,7 +241,7 @@ document.getElementById("archive").innerHTML =
 archiveHTML || "No previous devotionals.";
 
 })
-.catch(err=>{
+.catch(err => {
 
 document.getElementById("content").innerHTML =
 "Unable to load Daily Blaze.";
