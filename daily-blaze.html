@@ -94,6 +94,17 @@ border-radius:50%;
 text-decoration:none;
 font-size:22px;
 }
+
+#content h3{
+color:#ffcc70;
+font-size:28px;
+margin-bottom:15px;
+}
+
+#content p{
+margin-bottom:15px;
+}
+
 </style>
 </head>
 
@@ -161,7 +172,8 @@ href="https://wa.me/2349066079452">
 
 <script>
 
-const apiURL = "https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
+const apiURL =
+"https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
 
 fetch(apiURL)
 .then(res => res.json())
@@ -179,17 +191,22 @@ const latest = data[data.length - 1];
 
 document.getElementById("content").innerHTML = `
 
-<h3>${latest.Topic || ""}</h3>
+<h3>${latest["Topic"] || ""}</h3>
 
-<p><strong>Scripture:</strong> ${latest.Scripture || ""}</p>
+<p><strong>Scripture:</strong>
+${latest["Scripture"] || ""}</p>
 
-<p>${latest.Message || ""}</p>
+<p>
+${latest["Message"] || ""}
+</p>
 
 <p><strong>Prayer:</strong><br>
-${latest.Prayer || ""}</p>
+${latest["Prayer"] || ""}
+</p>
 
 <p><strong>Declaration/Affirmation:</strong><br>
-${latest["Declaration/Affirmation"] || ""}</p>
+${latest["Declaration/affirmation"] || ""}
+</p>
 
 `;
 
