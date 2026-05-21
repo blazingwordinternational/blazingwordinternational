@@ -179,6 +179,8 @@ const latest = data[data.length-1];
 
 document.getElementById("content").innerHTML = `
 
+${latest["Header"] || ""}
+
 ${latest["Topic:"] || ""}
 
 📖 Scripture:
@@ -204,4 +206,4 @@ document.getElementById("content").innerHTML =
 </script>
 
 </body>
-  </html>
+</html>
