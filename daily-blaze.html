@@ -146,9 +146,7 @@ target="_blank">
 <h2>Today's Daily Blaze</h2>
 
 <div id="content">
-
 Loading today's Daily Blaze...
-
 </div>
 
 </div>
@@ -156,13 +154,9 @@ Loading today's Daily Blaze...
 </div>
 
 <footer>
-
 🔥 FIRE IS OUR LIFESTYLE 🔥
-
 <br><br>
-
 © 2026 Blazing Word International
-
 </footer>
 
 <a class="whatsapp"
@@ -191,21 +185,22 @@ const latest = data[data.length - 1];
 
 document.getElementById("content").innerHTML = `
 
-<h3>${latest["Topic"] || ""}</h3>
+<h3>${latest["Topic:"] || ""}</h3>
 
-<p><strong>Scripture:</strong>
-${latest["Scripture"] || ""}</p>
+<p><strong>Scripture:</strong><br>
+${latest["Scripture:"] || ""}
+</p>
 
 <p>
-${latest["Message"] || ""}
+${latest["Message:"] || ""}
 </p>
 
 <p><strong>Prayer:</strong><br>
-${latest["Prayer"] || ""}
+${latest["Prayer:"] || ""}
 </p>
 
 <p><strong>Declaration/Affirmation:</strong><br>
-${latest["Declaration/affirmation"] || ""}
+${latest["Declaration/Affirmation "] || ""}
 </p>
 
 `;
@@ -221,4 +216,4 @@ document.getElementById("content").innerHTML =
 </script>
 
 </body>
-</html>
+  </html>
