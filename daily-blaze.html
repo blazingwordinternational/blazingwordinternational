@@ -13,10 +13,10 @@ box-sizing:border-box;
 }
 
 body{
-font-family:Arial,sans-serif;
+font-family:Georgia,serif;
 background:#0b0b0b;
 color:white;
-line-height:1.8;
+line-height:1.9;
 }
 
 .header{
@@ -48,16 +48,16 @@ font-weight:bold;
 }
 
 .section{
-max-width:900px;
+max-width:950px;
 margin:auto;
-padding:40px 20px;
+padding:35px 20px;
 }
 
 .card{
 background:#151515;
-padding:25px;
-border-radius:10px;
-margin-bottom:20px;
+padding:30px;
+border-radius:12px;
+margin-bottom:25px;
 }
 
 .card h2{
@@ -69,11 +69,24 @@ margin-bottom:15px;
 display:inline-block;
 background:#ff4500;
 color:white;
-padding:14px 22px;
+padding:14px 24px;
 border-radius:8px;
 text-decoration:none;
 font-weight:bold;
 margin-top:10px;
+}
+
+#content{
+white-space:pre-wrap;
+font-size:18px;
+line-height:2;
+}
+
+#content h3{
+color:#ffcc70;
+font-size:30px;
+margin-bottom:20px;
+text-align:center;
 }
 
 footer{
@@ -93,16 +106,6 @@ padding:15px;
 border-radius:50%;
 text-decoration:none;
 font-size:22px;
-}
-
-#content h3{
-color:#ffcc70;
-font-size:28px;
-margin-bottom:15px;
-}
-
-#content p{
-margin-bottom:15px;
 }
 
 </style>
@@ -173,47 +176,40 @@ fetch(apiURL)
 .then(res => res.json())
 .then(data => {
 
-if(!data || data.length === 0){
-
+if(!data || data.length===0){
 document.getElementById("content").innerHTML =
 "No Daily Blaze posted yet.";
-
 return;
 }
 
-const latest = data[data.length - 1];
+const latest = data[data.length-1];
 
 document.getElementById("content").innerHTML = `
 
-<h3>${latest["Topic:"] || ""}</h3>
+${latest["Topic:"] || ""}
 
-<p><strong>Scripture:</strong><br>
+📖 Scripture:
 ${latest["Scripture:"] || ""}
-</p>
 
-<p>
 ${latest["Message:"] || ""}
-</p>
 
-<p><strong>Prayer:</strong><br>
+🙏 Prayer:
 ${latest["Prayer:"] || ""}
-</p>
 
-<p><strong>Declaration/Affirmation:</strong><br>
+🔥 Declaration/Affirmation:
 ${latest["Declaration/Affirmation "] || ""}
-</p>
 
 `;
 
 })
-.catch(err => {
+.catch(err=>{
 
 document.getElementById("content").innerHTML =
-"Unable to load Daily Blaze at the moment.";
+"Unable to load Daily Blaze.";
 
 });
 
 </script>
 
 </body>
-  </html>
+</html>
