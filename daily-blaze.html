@@ -195,23 +195,51 @@ const apiURL =
 
 let devotionals = [];
 
+function formatText(text){
+return (text || "")
+.replace(/\\n/g,"\n")
+.replace(/\r\n/g,"\n");
+}
+
 function displayDevotional(index){
 
 const item = devotionals[index];
 
+const header =
+formatText(item["Header"] || item["Header:"] || "");
+
+const topic =
+formatText(item["Topic:"] || "");
+
+const scripture =
+formatText(item["Scripture:"] || "");
+
+const message =
+formatText(item["Message:"] || "");
+
+const prayer =
+formatText(item["Prayer:"] || "");
+
+const declaration =
+formatText(
+item["Declaration/Affirmation"] ||
+item["Declaration/Affirmation "] ||
+""
+);
+
 document.getElementById("content").innerHTML = `
 
-${item["Header"] || item["Header:"] || ""}
+${header}
 
-${item["Topic:"] || ""}
+${topic}
 
-${item["Scripture:"] || ""}
+${scripture}
 
-${item["Message:"] || ""}
+${message}
 
-${item["Prayer:"] || ""}
+${prayer}
 
-${item["Declaration/Affirmation"] || item["Declaration/Affirmation "] || ""}
+${declaration}
 
 `;
 
