@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -73,6 +74,7 @@ border-radius:8px;
 text-decoration:none;
 font-weight:bold;
 margin-top:10px;
+border:none;
 }
 
 #content{
@@ -83,9 +85,14 @@ line-height:2;
 
 .archive-item{
 display:block;
-padding:12px 0;
+width:100%;
+background:none;
+border:none;
 border-bottom:1px solid #333;
 color:#ffcc70;
+text-align:left;
+padding:12px 0;
+font-size:17px;
 cursor:pointer;
 }
 
@@ -111,6 +118,7 @@ border-radius:50%;
 text-decoration:none;
 font-size:22px;
 }
+
 </style>
 </head>
 
@@ -132,17 +140,23 @@ font-size:22px;
 <div class="section">
 
 <div class="card">
+
 <h2>🔥 Publish Daily Blaze</h2>
+
 <p>Click below to submit today's devotional.</p>
 
 <a class="btn"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform"
 target="_blank">
+
 📝 POST DAILY BLAZE
+
 </a>
+
 </div>
 
 <div class="card">
+
 <h2>Today's Daily Blaze</h2>
 
 <div id="content">
@@ -152,6 +166,7 @@ Loading today's Daily Blaze...
 </div>
 
 <div class="card">
+
 <h2>📚 Previous Devotionals</h2>
 
 <div id="archive">
@@ -208,8 +223,10 @@ behavior:"smooth"
 }
 
 fetch(apiURL)
-.then(res => res.json())
-.then(data => {
+.then(function(res){
+return res.json();
+})
+.then(function(data){
 
 if(!data || data.length===0){
 
@@ -217,29 +234,46 @@ document.getElementById("content").innerHTML =
 "No Daily Blaze posted yet.";
 
 return;
+
 }
 
 devotionals = data;
 
-displayDevotional(devotionals.length-1);
+displayDevotional(
+devotionals.length-1
+);
 
 let archiveHTML = "";
 
 for(let i=devotionals.length-2;i>=0;i--){
 
 archiveHTML +=
-'<div class="archive-item" onclick="displayDevotional('+i+')">' +
+'<button class="archive-item" data-id="'+i+'">' +
 '📖 ' +
 (devotionals[i]["Topic:"] || "Untitled Devotional") +
-'</div>';
+'</button>';
 
 }
 
 document.getElementById("archive").innerHTML =
 archiveHTML || "No previous devotionals.";
 
+document.querySelectorAll(".archive-item")
+.forEach(function(btn){
+
+btn.addEventListener("click", function(){
+
+let idx =
+parseInt(this.dataset.id);
+
+displayDevotional(idx);
+
+});
+
+});
+
 })
-.catch(error => {
+.catch(function(error){
 
 document.getElementById("content").innerHTML =
 "Unable to load Daily Blaze.";
