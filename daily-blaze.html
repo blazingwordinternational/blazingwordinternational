@@ -84,7 +84,7 @@ Loading...
 
 <script>
 
-const sheetURL = "YOUR-EXEC-LINK-HERE";
+const sheetURL = "https://script.google.com/macros/s/AKfycbxa9j4cvBPYw8baLe9c6vBrK4X0FkYmY-Y8Uf2QTHFZtqMOtHmG3Wa4PicOGN2mw7ne/exec";
 
 fetch(sheetURL)
 .then(res => res.json())
@@ -92,13 +92,23 @@ fetch(sheetURL)
 
 let latest = data[data.length - 1];
 
+function formatDate(dateString){
+let d = new Date(dateString);
+return d.toLocaleDateString('en-GB',{
+weekday:'long',
+day:'numeric',
+month:'long',
+year:'numeric'
+});
+}
+
 function formatMessage(item){
 
 return `
 🔥 THE DAILY BLAZE 🔥
 Apst. K. Atting
 
-📅 ${new Date(item.Timestamp).toDateString()}
+📅 ${formatDate(item.Timestamp)}
 
 *TOPIC: ${item.Topic || ""}*
 
@@ -127,7 +137,7 @@ formatMessage(latest);
 
 let archiveHTML = "";
 
-data.slice().reverse().forEach((item,index)=>{
+data.slice().reverse().forEach((item)=>{
 
 archiveHTML += `
 <a href="#"
