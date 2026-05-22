@@ -16,107 +16,50 @@ body{
 font-family:Georgia,serif;
 background:#0b0b0b;
 color:white;
-line-height:1.9;
+line-height:1.8;
+padding:20px;
 }
 
-.header{
-background:#111;
-text-align:center;
-padding:60px 20px;
-}
-
-.header h1{
-color:#ff4500;
-font-size:38px;
-}
-
-.header p{
-color:#ffcc70;
-}
-
-nav{
-background:#1a1a1a;
-padding:15px;
-text-align:center;
-}
-
-nav a{
-color:white;
-text-decoration:none;
-margin:0 10px;
-font-weight:bold;
-}
-
-.section{
-max-width:950px;
+.container{
+max-width:900px;
 margin:auto;
-padding:35px 20px;
+background:#111;
+padding:25px;
+border-radius:10px;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
 }
 
-.card{
-background:#151515;
-padding:30px;
-border-radius:12px;
-margin-bottom:25px;
+h1{
+text-align:center;
+color:#ff4500;
+margin-bottom:20px;
 }
 
-.card h2{
+.content{
+white-space:pre-line;
+font-size:17px;
+}
+
+.archive{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid #333;
+}
+
+.archive h2{
 color:#ff4500;
 margin-bottom:15px;
 }
 
-.btn{
-display:inline-block;
-background:#ff4500;
-color:white;
-padding:14px 24px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-margin-top:10px;
-border:none;
-}
-
-#content{
-white-space:pre-wrap;
-font-size:18px;
-line-height:2;
-}
-
-.archive-item{
+.archive a{
 display:block;
-width:100%;
-background:none;
-border:none;
-border-bottom:1px solid #333;
 color:#ffcc70;
-text-align:left;
-padding:12px 0;
-font-size:17px;
-cursor:pointer;
-}
-
-.archive-item:hover{
-color:#ff4500;
-}
-
-footer{
-background:#111;
-padding:25px;
-text-align:center;
-margin-top:40px;
-}
-
-.whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:15px;
-border-radius:50%;
+margin-bottom:10px;
 text-decoration:none;
-font-size:22px;
+}
+
+.archive a:hover{
+color:#ff4500;
 }
 
 </style>
@@ -124,191 +67,93 @@ font-size:22px;
 
 <body>
 
-<div class="header">
-<h1>🔥 Daily Blaze</h1>
-<p>Blazing Word International</p>
+<div class="container">
+
+<h1>Today's Daily Blaze</h1>
+
+<div id="daily-blaze" class="content">
+Loading...
 </div>
 
-<nav>
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="pastor.html">Pastor</a>
-<a href="daily-blaze.html">Daily Blaze</a>
-<a href="contact.html">Contact</a>
-</nav>
-
-<div class="section">
-
-<div class="card">
-
-<h2>🔥 Publish Daily Blaze</h2>
-
-<p>Click below to submit today's devotional.</p>
-
-<a class="btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeQBOHKYT_d4y695OGwOqaLiOyMjeROjgG8-xQlOlXkGi6g5A/viewform"
-target="_blank">
-
-📝 POST DAILY BLAZE
-
-</a>
-
-</div>
-
-<div class="card">
-
-<h2>Today's Daily Blaze</h2>
-
-<div id="content">
-Loading today's Daily Blaze...
-</div>
-
-</div>
-
-<div class="card">
-
+<div class="archive">
 <h2>📚 Previous Devotionals</h2>
-
-<div id="archive">
-Loading archive...
+<div id="archive-list">Loading...</div>
 </div>
 
 </div>
-
-</div>
-
-<footer>
-🔥 FIRE IS OUR LIFESTYLE 🔥
-<br><br>
-© 2026 Blazing Word International
-</footer>
-
-<a class="whatsapp"
-href="https://wa.me/2349066079452">
-💬
-</a>
 
 <script>
 
-const apiURL =
-"https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
+const sheetURL = "YOUR-EXEC-LINK-HERE";
 
-let devotionals = [];
+fetch(sheetURL)
+.then(res => res.json())
+.then(data => {
 
-function formatText(text){
-return (text || "")
-.replace(/\\n/g,"\n")
-.replace(/\r\n/g,"\n");
-}
+let latest = data[data.length - 1];
 
-function displayDevotional(index){
+function formatMessage(item){
 
-const item = devotionals[index];
+return `
+🔥 THE DAILY BLAZE 🔥
+Apst. K. Atting
 
-const header =
-formatText(item["Header"] || item["Header:"] || "");
+📅 ${new Date(item.Timestamp).toDateString()}
 
-const topic =
-formatText(item["Topic:"] || "");
+*TOPIC: ${item.Topic || ""}*
 
-const scripture =
-formatText(item["Scripture:"] || "");
+*📖 BIBLE READING:*
 
-const message =
-formatText(item["Message:"] || "");
+${item.Scripture || ""}
 
-const prayer =
-formatText(item["Prayer:"] || "");
+${item.Message || ""}
 
-const declaration =
-formatText(
-item["Declaration/Affirmation"] ||
-item["Declaration/Affirmation "] ||
-""
-);
+*PRAYER*
 
-document.getElementById("content").innerHTML = `
+${item.Prayer || ""}
 
-${header}
+*🔥 DECLARATION/AFFIRMATION 🔥*
 
-${topic}
+${item["Declaration/Affirmation"] || ""}
 
-${scripture}
-
-${message}
-
-${prayer}
-
-${declaration}
-
+🔥Blazing Word International🔥
+🔥 Raising lives through the power of God's word 🔥
 `;
 
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
 }
 
-fetch(apiURL)
-.then(function(res){
-return res.json();
-})
-.then(function(data){
-
-if(!data || data.length===0){
-
-document.getElementById("content").innerHTML =
-"No Daily Blaze posted yet.";
-
-return;
-
-}
-
-devotionals = data;
-
-displayDevotional(
-devotionals.length-1
-);
+document.getElementById("daily-blaze").innerText =
+formatMessage(latest);
 
 let archiveHTML = "";
 
-for(let i=devotionals.length-2;i>=0;i--){
+data.slice().reverse().forEach((item,index)=>{
 
-archiveHTML +=
-'<button class="archive-item" data-id="'+i+'">' +
-'📖 ' +
-(devotionals[i]["Topic:"] || "Untitled Devotional") +
-'</button>';
-
-}
-
-document.getElementById("archive").innerHTML =
-archiveHTML || "No previous devotionals.";
-
-document.querySelectorAll(".archive-item")
-.forEach(function(btn){
-
-btn.addEventListener("click", function(){
-
-let idx =
-parseInt(this.dataset.id);
-
-displayDevotional(idx);
+archiveHTML += `
+<a href="#"
+onclick='showDevotional(${JSON.stringify(item)})'>
+📖 ${item.Topic}
+</a>
+`;
 
 });
 
-});
+document.getElementById("archive-list").innerHTML =
+archiveHTML;
+
+window.showDevotional = function(item){
+document.getElementById("daily-blaze").innerText =
+formatMessage(item);
+window.scrollTo(0,0);
+};
 
 })
-.catch(function(error){
 
-document.getElementById("content").innerHTML =
+.catch(err=>{
+document.getElementById("daily-blaze").innerHTML =
 "Unable to load Daily Blaze.";
-
-document.getElementById("archive").innerHTML =
+document.getElementById("archive-list").innerHTML =
 "Archive unavailable.";
-
 });
 
 </script>
