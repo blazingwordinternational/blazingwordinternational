@@ -1,113 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>The Daily Blaze | Blazing Word International</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Blaze | Blazing Word International</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
 body{
 font-family:Georgia, serif;
-background:#111;
+background:#0b0b0b;
 color:white;
-padding:20px;
 line-height:1.8;
+padding:20px;
 }
 
 .container{
 max-width:900px;
 margin:auto;
-background:#1a1a1a;
+background:#111;
 padding:25px;
-border-radius:12px;
-box-shadow:0 0 15px rgba(0,0,0,.4);
+border-radius:10px;
+box-shadow:0 0 15px rgba(0,0,0,.5);
 }
 
-.devotional{
+.content{
 white-space:pre-line;
-font-size:18px;
+font-size:17px;
 }
 
 .archive{
 margin-top:40px;
+padding-top:20px;
+border-top:1px solid #333;
 }
 
-.archive h3{
-color:orange;
+.archive h2{
+color:#ff4500;
 margin-bottom:15px;
 }
 
 .archive a{
 display:block;
-padding:8px 0;
-color:#ffcc66;
+color:#ffcc70;
+margin-bottom:10px;
 text-decoration:none;
 font-weight:bold;
 }
 
 .archive a:hover{
-color:orange;
+color:#ff4500;
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
-<div id="devotional" class="devotional">
-Loading Daily Blaze...
+<div id="daily-blaze" class="content">
+Loading...
 </div>
 
 <div class="archive">
-<h3>📚 Previous Devotionals</h3>
-<div id="archiveList"></div>
+<h2>📚 Previous Devotionals</h2>
+<div id="archive-list"></div>
 </div>
 
 </div>
 
 <script>
 
-const SHEET_URL =
+const sheetURL =
 "https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
 
-fetch(SHEET_URL)
-.then(response => response.json())
+fetch(sheetURL)
+.then(res => res.json())
 .then(data => {
 
-data.reverse();
+let latest = data[data.length - 1];
 
-showDevotional(data[0]);
+function formatDate(dateString){
 
-let archiveHTML = "";
+if(!dateString) return "";
 
-data.forEach((item,index)=>{
+let d = new Date(dateString);
 
-archiveHTML += `
-<a href="#" onclick='showDevotional(${JSON.stringify(item)})'>
-📖 ${item.Topic}
-</a>
-`;
-
-});
-
-document.getElementById("archiveList").innerHTML =
-archiveHTML;
-
-})
-
-.catch(error => {
-
-document.getElementById("devotional").innerHTML =
-"Unable to load Daily Blaze.";
-
-});
-
-function formatDate(date){
-
-let d = new Date(date);
-
-return d.toLocaleDateString(
-'en-GB',
-{
+return d.toLocaleDateString('en-GB',{
 weekday:'long',
 day:'numeric',
 month:'long',
@@ -116,37 +99,70 @@ year:'numeric'
 
 }
 
-function showDevotional(item){
+function formatMessage(item){
 
-document.getElementById("devotional").innerHTML = `
-
+return `
 🔥 THE DAILY BLAZE 🔥
 Apst. K. Atting
 
 📅 ${formatDate(item.Timestamp)}
 
-📖 TOPIC:
-${item.Topic || ""}
+${item["Topic:"] || ""}
 
-📖 Scripture:
-${item.Scripture || ""}
+${item["Scripture:"] || ""}
 
-${item.Message || ""}
+${item["Message"] || ""}
 
 🙏 Prayer:
-${item.Prayer || ""}
+
+${item["Prayer"] || ""}
 
 🔥 Declaration/Affirmation:
+
 ${item["Declaration/Affirmation"] || ""}
 
 🔥 Blazing Word International 🔥
 Raising lives through the power of God's word
-
 `;
+
+}
+
+document.getElementById("daily-blaze").innerText =
+formatMessage(latest);
+
+let archiveHTML = "";
+
+data.slice().reverse().forEach((item)=>{
+
+archiveHTML += `
+<a href="#"
+onclick='showDevotional(${JSON.stringify(item)})'>
+📖 ${item["Topic:"] || "Daily Blaze"}
+</a>
+`;
+
+});
+
+document.getElementById("archive-list").innerHTML =
+archiveHTML;
+
+window.showDevotional = function(item){
+
+document.getElementById("daily-blaze").innerText =
+formatMessage(item);
 
 window.scrollTo(0,0);
 
-}
+};
+
+})
+
+.catch(err=>{
+
+document.getElementById("daily-blaze").innerHTML =
+"Unable to load Daily Blaze.";
+
+});
 
 </script>
 
