@@ -12,7 +12,7 @@ box-sizing:border-box;
 }
 
 body{
-font-family:Georgia, serif;
+font-family:Georgia,serif;
 background:#0b0b0b;
 color:white;
 line-height:1.8;
@@ -86,9 +86,11 @@ let latest = data[data.length - 1];
 
 function formatDate(dateString){
 
-if(!dateString) return "";
+if(!dateString || dateString==="") return "";
 
 let d = new Date(dateString);
+
+if(isNaN(d)) return "";
 
 return d.toLocaleDateString('en-GB',{
 weekday:'long',
@@ -102,27 +104,21 @@ year:'numeric'
 function formatMessage(item){
 
 return `
-🔥 THE DAILY BLAZE 🔥
-Apst. K. Atting
 
-📅 ${formatDate(item.Timestamp)}
+${item["Header"] || "🔥 THE DAILY BLAZE 🔥\nApst. K. Atting"}
+
+${formatDate(item.Timestamp) ? "📅 " + formatDate(item.Timestamp) : ""}
 
 ${item["Topic:"] || ""}
 
 ${item["Scripture:"] || ""}
 
-${item["Message"] || ""}
+${item["Message:"] || ""}
 
-🙏 Prayer:
+${item["Prayer:"] || ""}
 
-${item["Prayer"] || ""}
+${item["Declaration/Affirmation "] || ""}
 
-🔥 Declaration/Affirmation:
-
-${item["Declaration/Affirmation"] || ""}
-
-🔥 Blazing Word International 🔥
-Raising lives through the power of God's word
 `;
 
 }
@@ -161,6 +157,9 @@ window.scrollTo(0,0);
 
 document.getElementById("daily-blaze").innerHTML =
 "Unable to load Daily Blaze.";
+
+document.getElementById("archive-list").innerHTML =
+"Archive unavailable.";
 
 });
 
