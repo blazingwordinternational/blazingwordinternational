@@ -12,10 +12,10 @@ box-sizing:border-box;
 }
 
 body{
-font-family:Georgia,serif;
+font-family:Georgia, serif;
 background:#0b0b0b;
 color:white;
-line-height:1.8;
+line-height:1.9;
 padding:20px;
 }
 
@@ -29,8 +29,23 @@ box-shadow:0 0 15px rgba(0,0,0,.5);
 }
 
 .content{
-white-space:pre-line;
+white-space:pre-wrap;
 font-size:17px;
+}
+
+.post-btn{
+display:inline-block;
+background:#ff4500;
+color:white;
+padding:12px 18px;
+text-decoration:none;
+border-radius:6px;
+margin-bottom:25px;
+font-weight:bold;
+}
+
+.post-btn:hover{
+background:#cc3700;
 }
 
 .archive{
@@ -47,7 +62,7 @@ margin-bottom:15px;
 .archive a{
 display:block;
 color:#ffcc70;
-margin-bottom:10px;
+margin-bottom:12px;
 text-decoration:none;
 font-weight:bold;
 }
@@ -61,6 +76,12 @@ color:#ff4500;
 <body>
 
 <div class="container">
+
+<a class="post-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSdL-X0UQLLCKUxJNWJMuh2DF9Fe-h9GDSdvw25tuAcqNQGtWA/viewform"
+target="_blank">
+📝 Post Today's Daily Blaze
+</a>
 
 <div id="daily-blaze" class="content">
 Loading...
@@ -78,17 +99,46 @@ Loading...
 const sheetURL =
 "https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
 
-fetch(sheetURL)
-.then(res => res.json())
-.then(data => {
+let devotionals=[];
 
-let latest = data[data.length - 1];
+fetch(sheetURL)
+.then(res=>res.json())
+.then(data=>{
+
+devotionals=data;
+showDevotional(data.length-1);
+
+let archiveHTML="";
+
+data.slice().reverse().forEach((item,index)=>{
+
+let actualIndex=data.length-1-index;
+
+archiveHTML+=`
+<a href="#"
+onclick="showDevotional(${actualIndex})">
+📖 ${item["Topic:"]||"Daily Blaze"}
+</a>
+`;
+
+});
+
+document.getElementById("archive-list").innerHTML=
+archiveHTML;
+
+})
+.catch(err=>{
+
+document.getElementById("daily-blaze").innerHTML=
+"Unable to load Daily Blaze.";
+
+});
 
 function formatDate(dateString){
 
-if(!dateString || dateString==="") return "";
+if(!dateString) return "";
 
-let d = new Date(dateString);
+let d=new Date(dateString);
 
 if(isNaN(d)) return "";
 
@@ -101,67 +151,35 @@ year:'numeric'
 
 }
 
-function formatMessage(item){
+function showDevotional(index){
 
-return `
+let item=devotionals[index];
 
-${item["Header"] || "🔥 THE DAILY BLAZE 🔥\nApst. K. Atting"}
+let header=item["Header"]||"🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting";
 
-${formatDate(item.Timestamp) ? "📅 " + formatDate(item.Timestamp) : ""}
+let dateText=formatDate(item.Timestamp);
 
-${item["Topic:"] || ""}
+document.getElementById("daily-blaze").innerText=`
 
-${item["Scripture:"] || ""}
+${header}
 
-${item["Message:"] || ""}
+${dateText ? "📅 "+dateText : ""}
 
-${item["Prayer:"] || ""}
+${item["Topic:"]||""}
 
-${item["Declaration/Affirmation "] || ""}
+${item["Scripture:"]||""}
+
+${item["Message:"]||""}
+
+${item["Prayer:"]||""}
+
+${item["Declaration/Affirmation "]||""}
 
 `;
-
-}
-
-document.getElementById("daily-blaze").innerText =
-formatMessage(latest);
-
-let archiveHTML = "";
-
-data.slice().reverse().forEach((item)=>{
-
-archiveHTML += `
-<a href="#"
-onclick='showDevotional(${JSON.stringify(item)})'>
-📖 ${item["Topic:"] || "Daily Blaze"}
-</a>
-`;
-
-});
-
-document.getElementById("archive-list").innerHTML =
-archiveHTML;
-
-window.showDevotional = function(item){
-
-document.getElementById("daily-blaze").innerText =
-formatMessage(item);
 
 window.scrollTo(0,0);
 
-};
-
-})
-
-.catch(err=>{
-
-document.getElementById("daily-blaze").innerHTML =
-"Unable to load Daily Blaze.";
-
-document.getElementById("archive-list").innerHTML =
-"Archive unavailable.";
-
-});
+}
 
 </script>
 
