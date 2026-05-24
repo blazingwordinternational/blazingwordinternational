@@ -155,8 +155,9 @@ function showDevotional(index){
 
 let item=devotionals[index];
 
-let header=item["Header"]||"🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting";
-
+let header=(item["Header"]||"🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting")
+.replace("🔥 THE DAILY BLAZE 🔥Apst.","🔥 THE DAILY BLAZE 🔥\n\nApst.")
+.replace("International📅","International\n\n📅");
 let dateText=formatDate(item.Timestamp);
 
 document.getElementById("daily-blaze").innerText=`
