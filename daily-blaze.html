@@ -181,10 +181,8 @@ let header=(item["Header"]||
 let dateText=formatDate(item.Timestamp);
 
 document.getElementById("daily-blaze").innerText=
-
 `${header}
-
-${dateText ? "📅 "+dateText : ""}
+${dateText ? "\n📅 " + dateText : ""}
 
 ${item["Topic:"] || ""}
 
@@ -194,9 +192,7 @@ ${item["Message:"] || ""}
 
 ${item["Prayer:"] || ""}
 
-${item["Declaration/Affirmation "] || ""}
-
-`;
+${item["Declaration/Affirmation "] || ""}`;
 
 window.scrollTo(0,0);
 
