@@ -88,8 +88,13 @@ Loading...
 </div>
 
 <div class="archive">
+
+<h2>🔥 Today's Daily Blaze</h2>
+<div id="today-link"></div>
+
 <h2>📚 Previous Devotionals</h2>
 <div id="archive-list"></div>
+
 </div>
 
 </div>
@@ -106,20 +111,32 @@ fetch(sheetURL)
 .then(data=>{
 
 devotionals=data;
+
 showDevotional(data.length-1);
+
+document.getElementById("today-link").innerHTML=`
+<a href="#"
+onclick="showDevotional(${data.length-1})">
+🔥 ${data[data.length-1]["Topic:"] || "Today's Daily Blaze"}
+</a>
+`;
 
 let archiveHTML="";
 
-data.slice().reverse().forEach((item,index)=>{
+data.slice(0,-1).reverse().forEach((item,index)=>{
 
-let actualIndex=data.length-1-index;
+let actualIndex=data.length-2-index;
+
+if(item["Topic:"]){
 
 archiveHTML+=`
 <a href="#"
 onclick="showDevotional(${actualIndex})">
-📖 ${item["Topic:"]||"Daily Blaze"}
+📖 ${item["Topic:"]}
 </a>
 `;
+
+}
 
 });
 
@@ -127,6 +144,7 @@ document.getElementById("archive-list").innerHTML=
 archiveHTML;
 
 })
+
 .catch(err=>{
 
 document.getElementById("daily-blaze").innerHTML=
@@ -155,26 +173,28 @@ function showDevotional(index){
 
 let item=devotionals[index];
 
-let header=(item["Header"]||"🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting")
+let header=(item["Header"]||
+"🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting\nBlazing Word International")
 .replace("🔥 THE DAILY BLAZE 🔥Apst.","🔥 THE DAILY BLAZE 🔥\n\nApst.")
 .replace("International📅","International\n\n📅");
+
 let dateText=formatDate(item.Timestamp);
 
-document.getElementById("daily-blaze").innerText=`
+document.getElementById("daily-blaze").innerText=
 
-${header}
+`${header}
 
 ${dateText ? "📅 "+dateText : ""}
 
-${item["Topic:"]||""}
+${item["Topic:"] || ""}
 
-${item["Scripture:"]||""}
+${item["Scripture:"] || ""}
 
-${item["Message:"]||""}
+${item["Message:"] || ""}
 
-${item["Prayer:"]||""}
+${item["Prayer:"] || ""}
 
-${item["Declaration/Affirmation "]||""}
+${item["Declaration/Affirmation "] || ""}
 
 `;
 
