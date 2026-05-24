@@ -1,177 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>The Daily Blaze</title>
+<title>The Daily Blaze | Blazing Word International</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #0b0b0b;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-  }
+body{
+font-family:Georgia, serif;
+background:#111;
+color:white;
+padding:20px;
+line-height:1.8;
+}
 
-  .container {
-    padding: 20px;
-  }
+.container{
+max-width:900px;
+margin:auto;
+background:#1a1a1a;
+padding:25px;
+border-radius:12px;
+box-shadow:0 0 15px rgba(0,0,0,.4);
+}
 
-  h1 {
-    text-align: center;
-    color: orange;
-  }
+.devotional{
+white-space:pre-line;
+font-size:18px;
+}
 
-  .section {
-    margin-bottom: 20px;
-    padding: 15px;
-    background: #1a1a1a;
-    border-radius: 10px;
-  }
+.archive{
+margin-top:40px;
+}
 
-  .title {
-    font-size: 18px;
-    font-weight: bold;
-    color: gold;
-  }
+.archive h3{
+color:orange;
+margin-bottom:15px;
+}
 
-  .label {
-    font-weight: bold;
-    color: #ffb84d;
-  }
+.archive a{
+display:block;
+padding:8px 0;
+color:#ffcc66;
+text-decoration:none;
+font-weight:bold;
+}
 
-  .prev-item {
-    padding: 10px;
-    margin: 5px 0;
-    background: #111;
-    border-radius: 8px;
-  }
-
-  a {
-    color: #00bfff;
-    text-decoration: none;
-  }
+.archive a:hover{
+color:orange;
+}
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
-  <h1>🔥 THE DAILY BLAZE 🔥</h1>
+<div id="devotional" class="devotional">
+Loading Daily Blaze...
+</div>
 
-  <div class="section">
-    <div id="author">Apst. K. Atting</div>
-    <div id="date">Loading date...</div>
-  </div>
-
-  <div class="section">
-    <div class="label">📖 TOPIC:</div>
-    <div id="topic">Loading...</div>
-
-    <div class="label">📖 Scripture:</div>
-    <div id="scripture">Loading...</div>
-
-    <div class="label">🙏 Prayer:</div>
-    <div id="prayer">Loading...</div>
-
-    <div class="label">🔥 Declaration/Affirmation:</div>
-    <div id="declaration">Loading...</div>
-  </div>
-
-  <div class="section">
-    <div class="title">📚 Previous Devotionals</div>
-    <div id="previous"></div>
-  </div>
-
-  <div class="section" style="text-align:center;">
-    🔥 Blazing Word International 🔥<br/>
-    Raising lives through the power of God's word
-  </div>
+<div class="archive">
+<h3>📚 Previous Devotionals</h3>
+<div id="archiveList"></div>
+</div>
 
 </div>
 
 <script>
-const API_URL = "YOUR_GOOGLE_SCRIPT_URL_HERE"; // 🔴 replace this
 
-// 🔥 Format Date safely
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  if (isNaN(date)) return new Date().toLocaleDateString("en-GB");
-  
-  return date.toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric"
-  });
+const SHEET_URL =
+"https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
+
+fetch(SHEET_URL)
+.then(response => response.json())
+.then(data => {
+
+data.reverse();
+
+showDevotional(data[0]);
+
+let archiveHTML = "";
+
+data.forEach((item,index)=>{
+
+archiveHTML += `
+<a href="#" onclick='showDevotional(${JSON.stringify(item)})'>
+📖 ${item.Topic}
+</a>
+`;
+
+});
+
+document.getElementById("archiveList").innerHTML =
+archiveHTML;
+
+})
+
+.catch(error => {
+
+document.getElementById("devotional").innerHTML =
+"Unable to load Daily Blaze.";
+
+});
+
+function formatDate(date){
+
+let d = new Date(date);
+
+return d.toLocaleDateString(
+'en-GB',
+{
+weekday:'long',
+day:'numeric',
+month:'long',
+year:'numeric'
+});
+
 }
 
-// 🔥 Safe text loader
-function safe(value) {
-  return value && value.trim() !== "" ? value : "Not available yet";
+function showDevotional(item){
+
+document.getElementById("devotional").innerHTML = `
+
+🔥 THE DAILY BLAZE 🔥
+Apst. K. Atting
+
+📅 ${formatDate(item.Timestamp)}
+
+📖 TOPIC:
+${item.Topic || ""}
+
+📖 Scripture:
+${item.Scripture || ""}
+
+${item.Message || ""}
+
+🙏 Prayer:
+${item.Prayer || ""}
+
+🔥 Declaration/Affirmation:
+${item["Declaration/Affirmation"] || ""}
+
+🔥 Blazing Word International 🔥
+Raising lives through the power of God's word
+
+`;
+
+window.scrollTo(0,0);
+
 }
 
-// 🔥 Load devotional
-async function loadDevotional() {
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    console.log("RAW DATA:", data);
-
-    // 👉 Current devotional
-    const today = data.today || data[0] || {};
-
-    document.getElementById("date").textContent =
-      "📅 " + formatDate(today.date);
-
-    document.getElementById("topic").textContent =
-      safe(today.topic || today.Topic);
-
-    document.getElementById("scripture").textContent =
-      safe(today.scripture || today.Scripture);
-
-    document.getElementById("prayer").textContent =
-      safe(today.prayer || today.Prayer);
-
-    document.getElementById("declaration").textContent =
-      safe(today.declaration || today.Declaration);
-
-    // 👉 Previous devotionals
-    const previous = data.previous || data.slice(1);
-
-    const container = document.getElementById("previous");
-    container.innerHTML = "";
-
-    if (!previous || previous.length === 0) {
-      container.innerHTML = "<div>No previous devotionals yet.</div>";
-      return;
-    }
-
-    previous.forEach(item => {
-      const div = document.createElement("div");
-      div.className = "prev-item";
-
-      const title = item.topic || item.Topic || "No Title";
-      const date = item.date ? formatDate(item.date) : "";
-
-      div.innerHTML = `
-        📖 ${title}<br/>
-        <small>${date}</small>
-      `;
-
-      container.appendChild(div);
-    });
-
-  } catch (error) {
-    console.error(error);
-    document.getElementById("topic").textContent = "Error loading data";
-  }
-}
-
-// run
-loadDevotional();
 </script>
 
 </body>
