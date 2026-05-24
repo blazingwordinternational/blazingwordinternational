@@ -1,66 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Daily Blaze | Blazing Word International</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Daily Blaze</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+  body {
+    font-family: Arial, sans-serif;
+    background: #0b0b0b;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
 
-body{
-font-family:Georgia,serif;
-background:#0b0b0b;
-color:white;
-line-height:1.8;
-padding:20px;
-}
+  .container {
+    padding: 20px;
+  }
 
-.container{
-max-width:900px;
-margin:auto;
-background:#111;
-padding:25px;
-border-radius:10px;
-box-shadow:0 0 15px rgba(0,0,0,0.5);
-}
+  h1 {
+    text-align: center;
+    color: orange;
+  }
 
-h1{
-text-align:center;
-color:#ff4500;
-margin-bottom:20px;
-}
+  .section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #1a1a1a;
+    border-radius: 10px;
+  }
 
-.content{
-white-space:pre-line;
-font-size:17px;
-}
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    color: gold;
+  }
 
-.archive{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid #333;
-}
+  .label {
+    font-weight: bold;
+    color: #ffb84d;
+  }
 
-.archive h2{
-color:#ff4500;
-margin-bottom:15px;
-}
+  .prev-item {
+    padding: 10px;
+    margin: 5px 0;
+    background: #111;
+    border-radius: 8px;
+  }
 
-.archive a{
-display:block;
-color:#ffcc70;
-margin-bottom:10px;
-text-decoration:none;
-font-weight:bold;
-}
-
-.archive a:hover{
-color:#ff4500;
-}
+  a {
+    color: #00bfff;
+    text-decoration: none;
+  }
 </style>
 </head>
 
@@ -68,101 +59,119 @@ color:#ff4500;
 
 <div class="container">
 
-<h1>Today's Daily Blaze</h1>
+  <h1>🔥 THE DAILY BLAZE 🔥</h1>
 
-<div id="daily-blaze" class="content">
-Loading...
-</div>
+  <div class="section">
+    <div id="author">Apst. K. Atting</div>
+    <div id="date">Loading date...</div>
+  </div>
 
-<div class="archive">
-<h2>📚 Previous Devotionals</h2>
-<div id="archive-list">Loading...</div>
-</div>
+  <div class="section">
+    <div class="label">📖 TOPIC:</div>
+    <div id="topic">Loading...</div>
+
+    <div class="label">📖 Scripture:</div>
+    <div id="scripture">Loading...</div>
+
+    <div class="label">🙏 Prayer:</div>
+    <div id="prayer">Loading...</div>
+
+    <div class="label">🔥 Declaration/Affirmation:</div>
+    <div id="declaration">Loading...</div>
+  </div>
+
+  <div class="section">
+    <div class="title">📚 Previous Devotionals</div>
+    <div id="previous"></div>
+  </div>
+
+  <div class="section" style="text-align:center;">
+    🔥 Blazing Word International 🔥<br/>
+    Raising lives through the power of God's word
+  </div>
 
 </div>
 
 <script>
+const API_URL = "YOUR_GOOGLE_SCRIPT_URL_HERE"; // 🔴 replace this
 
-const sheetURL = "https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
-
-fetch(sheetURL)
-.then(res => res.json())
-.then(data => {
-
-let latest = data[data.length - 1];
-
-function formatDate(dateString){
-let d = new Date(dateString);
-return d.toLocaleDateString('en-GB',{
-weekday:'long',
-day:'numeric',
-month:'long',
-year:'numeric'
-});
+// 🔥 Format Date safely
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  if (isNaN(date)) return new Date().toLocaleDateString("en-GB");
+  
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
 }
 
-function formatMessage(item){
-
-return `
-🔥 THE DAILY BLAZE 🔥
-Apst. K. Atting
-
-📅 ${formatDate(item.Timestamp)}
-
-📖 TOPIC: ${item.Topic || ""}
-
-📖 Scripture: ${item.Scripture || ""}
-
-${item.Message || ""}
-
-🙏 Prayer:
-
-${item.Prayer || ""}
-
-🔥 Declaration/Affirmation:
-
-${item["Declaration/Affirmation"] || ""}
-
-🔥 Blazing Word International 🔥
-Raising lives through the power of God's word
-`;
-
+// 🔥 Safe text loader
+function safe(value) {
+  return value && value.trim() !== "" ? value : "Not available yet";
 }
 
-document.getElementById("daily-blaze").innerText =
-formatMessage(latest);
+// 🔥 Load devotional
+async function loadDevotional() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
 
-let archiveHTML = "";
+    console.log("RAW DATA:", data);
 
-data.slice().reverse().forEach((item)=>{
+    // 👉 Current devotional
+    const today = data.today || data[0] || {};
 
-archiveHTML += `
-<a href="#"
-onclick='showDevotional(${JSON.stringify(item)})'>
-📖 ${item.Topic}
-</a>
-`;
+    document.getElementById("date").textContent =
+      "📅 " + formatDate(today.date);
 
-});
+    document.getElementById("topic").textContent =
+      safe(today.topic || today.Topic);
 
-document.getElementById("archive-list").innerHTML =
-archiveHTML;
+    document.getElementById("scripture").textContent =
+      safe(today.scripture || today.Scripture);
 
-window.showDevotional = function(item){
-document.getElementById("daily-blaze").innerText =
-formatMessage(item);
-window.scrollTo(0,0);
-};
+    document.getElementById("prayer").textContent =
+      safe(today.prayer || today.Prayer);
 
-})
+    document.getElementById("declaration").textContent =
+      safe(today.declaration || today.Declaration);
 
-.catch(err=>{
-document.getElementById("daily-blaze").innerHTML =
-"Unable to load Daily Blaze.";
-document.getElementById("archive-list").innerHTML =
-"Archive unavailable.";
-});
+    // 👉 Previous devotionals
+    const previous = data.previous || data.slice(1);
 
+    const container = document.getElementById("previous");
+    container.innerHTML = "";
+
+    if (!previous || previous.length === 0) {
+      container.innerHTML = "<div>No previous devotionals yet.</div>";
+      return;
+    }
+
+    previous.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "prev-item";
+
+      const title = item.topic || item.Topic || "No Title";
+      const date = item.date ? formatDate(item.date) : "";
+
+      div.innerHTML = `
+        📖 ${title}<br/>
+        <small>${date}</small>
+      `;
+
+      container.appendChild(div);
+    });
+
+  } catch (error) {
+    console.error(error);
+    document.getElementById("topic").textContent = "Error loading data";
+  }
+}
+
+// run
+loadDevotional();
 </script>
 
 </body>
