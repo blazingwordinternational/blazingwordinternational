@@ -55,24 +55,39 @@ color:#ff4500;
 margin-bottom:15px;
 }
 
-.month-title{
-color:#ffaa33;
-font-size:18px;
+/* MONTH BUTTON */
+.month{
+background:#1a1a1a;
+padding:12px;
+margin-top:12px;
+border-radius:6px;
+cursor:pointer;
 font-weight:bold;
-margin-top:20px;
-margin-bottom:10px;
+color:#ffcc70;
+border:1px solid #333;
 }
 
-.archive a{
+/* HIDDEN TOPICS */
+.topics{
+display:none;
+padding-left:15px;
+margin-top:10px;
+}
+
+/* TOPIC LINKS */
+.topics a{
 display:block;
-color:#ffcc70;
+color:#fff;
 margin-bottom:10px;
 text-decoration:none;
-font-weight:bold;
 }
 
-.archive a:hover{
+.topics a:hover{
 color:#ff4500;
+}
+
+.active{
+display:block;
 }
 </style>
 </head>
@@ -118,34 +133,30 @@ devotionals=data;
 
 showDevotional(data.length-1);
 
+/* TODAY LINK */
 document.getElementById("today-link").innerHTML=`
 <a href="#"
 onclick="showDevotional(${data.length-1})">
-🔥 ${data[data.length-1]["Topic:"]}
+🔥 ${data[data.length-1]["Topic:"] || "Today's Daily Blaze"}
 </a>
 `;
 
+/* GROUP BY MONTH */
 let grouped={};
 
 data.slice(0,-1).forEach((item,index)=>{
 
 if(!item["Topic:"]) return;
 
+let d=item.Timestamp ? new Date(item.Timestamp) : null;
+
 let month="MAY 2026";
 
-if(item.Timestamp){
-
-let d=new Date(item.Timestamp);
-
-if(!isNaN(d)){
-
+if(d && !isNaN(d)){
 month=d.toLocaleString('en-GB',{
 month:'long',
 year:'numeric'
 }).toUpperCase();
-
-}
-
 }
 
 if(!grouped[month]) grouped[month]=[];
@@ -157,24 +168,34 @@ index:index
 
 });
 
+/* BUILD ACCORDION */
 let archiveHTML="";
 
-Object.keys(grouped).reverse().forEach(month=>{
+Object.keys(grouped).reverse().forEach((month,i)=>{
+
+let id="m"+i;
 
 archiveHTML+=`
-<div class="month-title">📅 ${month}</div>
+<div class="month" onclick="toggleMonth('${id}')">
+📅 ${month} ▼
+</div>
+
+<div id="${id}" class="topics">
 `;
 
-grouped[month].reverse().forEach(item=>{
+grouped[month].forEach(item=>{
 
 archiveHTML+=`
-<a href="#"
-onclick="showDevotional(${item.index})">
+<a href="#" onclick="showDevotional(${item.index})">
 📖 ${item.topic}
 </a>
 `;
 
 });
+
+archiveHTML+=`
+</div>
+`;
 
 });
 
@@ -184,11 +205,22 @@ archiveHTML;
 })
 
 .catch(err=>{
-
 document.getElementById("daily-blaze").innerHTML=
 "Unable to load Daily Blaze.";
-
 });
+
+/* TOGGLE MONTH */
+function toggleMonth(id){
+
+let el=document.getElementById(id);
+
+if(el.classList.contains("active")){
+el.classList.remove("active");
+}else{
+el.classList.add("active");
+}
+
+}
 
 function formatDate(dateString){
 
@@ -212,9 +244,7 @@ function showDevotional(index){
 let item=devotionals[index];
 
 let header=(item["Header"]||
-"🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting\nBlazing Word International")
-.replace("🔥 THE DAILY BLAZE 🔥Apst.","🔥 THE DAILY BLAZE 🔥\n\nApst.")
-.replace("International📅","International\n\n📅");
+"🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting\nBlazing Word International");
 
 let dateText=formatDate(item.Timestamp);
 
