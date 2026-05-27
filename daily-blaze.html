@@ -44,10 +44,6 @@ margin-bottom:25px;
 font-weight:bold;
 }
 
-.post-btn:hover{
-background:#cc3700;
-}
-
 .archive{
 margin-top:40px;
 padding-top:20px;
@@ -125,7 +121,7 @@ showDevotional(data.length-1);
 document.getElementById("today-link").innerHTML=`
 <a href="#"
 onclick="showDevotional(${data.length-1})">
-🔥 ${data[data.length-1]["Topic:"] || "Today's Daily Blaze"}
+🔥 ${data[data.length-1]["Topic:"]}
 </a>
 `;
 
@@ -133,14 +129,24 @@ let grouped={};
 
 data.slice(0,-1).forEach((item,index)=>{
 
-if(!item.Timestamp || !item["Topic:"]) return;
+if(!item["Topic:"]) return;
+
+let month="MAY 2026";
+
+if(item.Timestamp){
 
 let d=new Date(item.Timestamp);
 
-let month=d.toLocaleString('en-GB',{
+if(!isNaN(d)){
+
+month=d.toLocaleString('en-GB',{
 month:'long',
 year:'numeric'
 }).toUpperCase();
+
+}
+
+}
 
 if(!grouped[month]) grouped[month]=[];
 
