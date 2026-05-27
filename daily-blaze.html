@@ -44,18 +44,55 @@ margin-bottom:25px;
 font-weight:bold;
 }
 
-.archive{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid #333;
+/* SEARCH */
+.search-box{
+width:100%;
+padding:12px;
+margin:15px 0 10px;
+border-radius:6px;
+border:none;
+outline:none;
+font-size:16px;
 }
 
-.archive h2{
-color:#ff4500;
-margin-bottom:15px;
+/* HISTORY */
+.history{
+margin-bottom:10px;
 }
 
-/* MONTH BUTTON */
+.history span{
+display:inline-block;
+background:#222;
+color:#ffcc70;
+padding:6px 10px;
+margin:4px;
+border-radius:5px;
+cursor:pointer;
+font-size:13px;
+}
+
+.history span:hover{
+background:#333;
+}
+
+/* CLEAR BUTTON */
+.clear-btn{
+display:inline-block;
+background:#cc0000;
+color:white;
+padding:6px 10px;
+margin-top:8px;
+border-radius:5px;
+cursor:pointer;
+font-size:13px;
+border:none;
+}
+
+.clear-btn:hover{
+background:#ff0000;
+}
+
+/* MONTH */
 .month{
 background:#1a1a1a;
 padding:12px;
@@ -67,14 +104,17 @@ color:#ffcc70;
 border:1px solid #333;
 }
 
-/* HIDDEN TOPICS */
 .topics{
 display:none;
 padding-left:15px;
 margin-top:10px;
 }
 
-/* TOPIC LINKS */
+.active{
+display:block;
+}
+
+/* LINKS */
 .topics a{
 display:block;
 color:#fff;
@@ -86,8 +126,17 @@ text-decoration:none;
 color:#ff4500;
 }
 
-.active{
-display:block;
+mark{
+background:yellow;
+color:black;
+padding:2px;
+}
+
+.no-results{
+color:#ff6666;
+margin-top:15px;
+font-weight:bold;
+display:none;
 }
 </style>
 </head>
@@ -102,9 +151,7 @@ target="_blank">
 📝 Post Today's Daily Blaze
 </a>
 
-<div id="daily-blaze" class="content">
-Loading...
-</div>
+<div id="daily-blaze" class="content">Loading...</div>
 
 <div class="archive">
 
@@ -112,7 +159,23 @@ Loading...
 <div id="today-link"></div>
 
 <h2>📚 Previous Devotionals</h2>
+
+<input type="text" id="searchInput" class="search-box"
+placeholder="🔍 Search topic, scripture, message..."
+onkeyup="searchAll()">
+
+<!-- HISTORY -->
+<div id="history" class="history"></div>
+
+<button class="clear-btn" onclick="clearHistory()">
+🗑 Clear History
+</button>
+
 <div id="archive-list"></div>
+
+<div id="noResults" class="no-results">
+🚫 No results found.
+</div>
 
 </div>
 
@@ -124,6 +187,7 @@ const sheetURL =
 "https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
 
 let devotionals=[];
+let groupedData={};
 
 fetch(sheetURL)
 .then(res=>res.json())
@@ -133,7 +197,6 @@ devotionals=data;
 
 showDevotional(data.length-1);
 
-/* TODAY LINK */
 document.getElementById("today-link").innerHTML=`
 <a href="#"
 onclick="showDevotional(${data.length-1})">
@@ -141,10 +204,23 @@ onclick="showDevotional(${data.length-1})">
 </a>
 `;
 
-/* GROUP BY MONTH */
-let grouped={};
+groupData();
+renderArchive(groupedData);
+loadHistory();
 
-data.slice(0,-1).forEach((item,index)=>{
+})
+
+.catch(err=>{
+document.getElementById("daily-blaze").innerHTML=
+"Unable to load Daily Blaze.";
+});
+
+/* GROUP */
+function groupData(){
+
+groupedData={};
+
+devotionals.slice(0,-1).forEach((item,index)=>{
 
 if(!item["Topic:"]) return;
 
@@ -159,19 +235,27 @@ year:'numeric'
 }).toUpperCase();
 }
 
-if(!grouped[month]) grouped[month]=[];
+if(!groupedData[month]) groupedData[month]=[];
 
-grouped[month].push({
+groupedData[month].push({
 topic:item["Topic:"],
+scripture:item["Scripture:"]||"",
+message:item["Message:"]||"",
+prayer:item["Prayer:"]||"",
+decl:item["Declaration/Affirmation "]||"",
 index:index
 });
 
 });
 
-/* BUILD ACCORDION */
+}
+
+/* RENDER */
+function renderArchive(data){
+
 let archiveHTML="";
 
-Object.keys(grouped).reverse().forEach((month,i)=>{
+Object.keys(data).reverse().forEach((month,i)=>{
 
 let id="m"+i;
 
@@ -183,70 +267,157 @@ archiveHTML+=`
 <div id="${id}" class="topics">
 `;
 
-grouped[month].forEach(item=>{
+data[month].forEach(item=>{
 
 archiveHTML+=`
 <a href="#" onclick="showDevotional(${item.index})">
-📖 ${item.topic}
+${item.topic}
 </a>
 `;
 
 });
 
-archiveHTML+=`
-</div>
+archiveHTML+=`</div>`;
+});
+
+document.getElementById("archive-list").innerHTML=archiveHTML;
+}
+
+/* TOGGLE */
+function toggleMonth(id){
+document.getElementById(id).classList.toggle("active");
+}
+
+/* SEARCH */
+function searchAll(){
+
+let input=document.getElementById("searchInput").value.trim();
+
+if(input===""){
+groupData();
+renderArchive(groupedData);
+document.getElementById("noResults").style.display="none";
+return;
+}
+
+let filtered={};
+let found=false;
+
+devotionals.slice(0,-1).forEach((item,index)=>{
+
+if(!item["Topic:"]) return;
+
+let combined=
+(item["Topic:"]||"")+" "+
+(item["Scripture:"]||"")+" "+
+(item["Message:"]||"")+" "+
+(item["Prayer:"]||"");
+
+if(combined.toLowerCase().includes(input.toLowerCase())){
+
+found=true;
+
+let d=item.Timestamp ? new Date(item.Timestamp) : null;
+
+let month="MAY 2026";
+
+if(d && !isNaN(d)){
+month=d.toLocaleString('en-GB',{
+month:'long',
+year:'numeric'
+}).toUpperCase();
+}
+
+if(!filtered[month]) filtered[month]=[];
+
+filtered[month].push({
+topic:highlight(item["Topic:"],input),
+index:index
+});
+
+}
+
+});
+
+if(!found){
+document.getElementById("archive-list").innerHTML="";
+document.getElementById("noResults").style.display="block";
+return;
+}
+
+document.getElementById("noResults").style.display="none";
+renderArchive(filtered);
+}
+
+/* HISTORY SAVE */
+function saveHistory(term){
+
+let history=JSON.parse(localStorage.getItem("db_history")||"[]");
+
+history=history.filter(t=>t!==term);
+history.unshift(term);
+
+if(history.length>5) history.pop();
+
+localStorage.setItem("db_history",JSON.stringify(history));
+
+loadHistory();
+}
+
+/* LOAD HISTORY */
+function loadHistory(){
+
+let history=JSON.parse(localStorage.getItem("db_history")||"[]");
+
+let html="";
+
+history.forEach(term=>{
+
+html+=`
+<span onclick="useHistory('${term}')">
+${term}
+</span>
 `;
 
 });
 
-document.getElementById("archive-list").innerHTML=
-archiveHTML;
-
-})
-
-.catch(err=>{
-document.getElementById("daily-blaze").innerHTML=
-"Unable to load Daily Blaze.";
-});
-
-/* TOGGLE MONTH */
-function toggleMonth(id){
-
-let el=document.getElementById(id);
-
-if(el.classList.contains("active")){
-el.classList.remove("active");
-}else{
-el.classList.add("active");
+document.getElementById("history").innerHTML=html;
 }
+
+/* USE HISTORY */
+function useHistory(term){
+
+document.getElementById("searchInput").value=term;
+searchAll();
 
 }
 
-function formatDate(dateString){
+/* CLEAR HISTORY */
+function clearHistory(){
 
-if(!dateString) return "";
+localStorage.removeItem("db_history");
 
-let d=new Date(dateString);
-
-if(isNaN(d)) return "";
-
-return d.toLocaleDateString('en-GB',{
-weekday:'long',
-day:'numeric',
-month:'long',
-year:'numeric'
-});
-
+loadHistory();
 }
 
+/* HIGHLIGHT */
+function highlight(text,word){
+
+if(!word) return text;
+
+let regex=new RegExp("("+word+")","gi");
+
+return text.replace(regex,"<mark>$1</mark>");
+}
+
+/* SHOW DEVOTIONAL */
 function showDevotional(index){
 
 let item=devotionals[index];
 
-let header=(item["Header"]||
-"🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting\nBlazing Word International");
+let header="🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting\nBlazing Word International";
 
-let dateText=formatDate(item.Timestamp);
+let dateText=item.Timestamp ? formatDate(item.Timestamp) : "";
 
 document.getElementById("daily-blaze").innerText=
 `${header}
@@ -263,6 +434,22 @@ ${item["Prayer:"] || ""}
 ${item["Declaration/Affirmation "] || ""}`;
 
 window.scrollTo(0,0);
+
+}
+
+/* DATE */
+function formatDate(dateString){
+
+let d=new Date(dateString);
+
+if(isNaN(d)) return "";
+
+return d.toLocaleDateString('en-GB',{
+weekday:'long',
+day:'numeric',
+month:'long',
+year:'numeric'
+});
 
 }
 
