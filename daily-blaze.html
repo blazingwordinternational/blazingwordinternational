@@ -59,10 +59,18 @@ color:#ff4500;
 margin-bottom:15px;
 }
 
+.month-title{
+color:#ffaa33;
+font-size:18px;
+font-weight:bold;
+margin-top:20px;
+margin-bottom:10px;
+}
+
 .archive a{
 display:block;
 color:#ffcc70;
-margin-bottom:12px;
+margin-bottom:10px;
 text-decoration:none;
 font-weight:bold;
 }
@@ -121,22 +129,46 @@ onclick="showDevotional(${data.length-1})">
 </a>
 `;
 
+let grouped={};
+
+data.slice(0,-1).forEach((item,index)=>{
+
+if(!item.Timestamp || !item["Topic:"]) return;
+
+let d=new Date(item.Timestamp);
+
+let month=d.toLocaleString('en-GB',{
+month:'long',
+year:'numeric'
+}).toUpperCase();
+
+if(!grouped[month]) grouped[month]=[];
+
+grouped[month].push({
+topic:item["Topic:"],
+index:index
+});
+
+});
+
 let archiveHTML="";
 
-data.slice(0,-1).reverse().forEach((item,index)=>{
+Object.keys(grouped).reverse().forEach(month=>{
 
-let actualIndex=data.length-2-index;
+archiveHTML+=`
+<div class="month-title">📅 ${month}</div>
+`;
 
-if(item["Topic:"]){
+grouped[month].reverse().forEach(item=>{
 
 archiveHTML+=`
 <a href="#"
-onclick="showDevotional(${actualIndex})">
-📖 ${item["Topic:"]}
+onclick="showDevotional(${item.index})">
+📖 ${item.topic}
 </a>
 `;
 
-}
+});
 
 });
 
