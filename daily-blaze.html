@@ -44,15 +44,42 @@ margin-bottom:25px;
 font-weight:bold;
 }
 
-/* SEARCH */
+.search-wrap{
+position:relative;
+}
+
 .search-box{
 width:100%;
 padding:12px;
-margin:15px 0 10px;
+margin:15px 0 5px;
 border-radius:6px;
 border:none;
 outline:none;
 font-size:16px;
+}
+
+/* AUTOCOMPLETE */
+.suggestions{
+position:absolute;
+width:100%;
+background:#1a1a1a;
+border-radius:6px;
+overflow:hidden;
+z-index:999;
+display:none;
+box-shadow:0 0 10px rgba(0,0,0,.5);
+}
+
+.suggestions div{
+padding:10px;
+cursor:pointer;
+border-bottom:1px solid #333;
+color:#fff;
+}
+
+.suggestions div:hover{
+background:#333;
+color:#ffcc70;
 }
 
 /* HISTORY */
@@ -75,7 +102,7 @@ font-size:13px;
 background:#333;
 }
 
-/* CLEAR BUTTON */
+/* CLEAR */
 .clear-btn{
 display:inline-block;
 background:#cc0000;
@@ -114,7 +141,6 @@ margin-top:10px;
 display:block;
 }
 
-/* LINKS */
 .topics a{
 display:block;
 color:#fff;
@@ -151,7 +177,9 @@ target="_blank">
 📝 Post Today's Daily Blaze
 </a>
 
-<div id="daily-blaze" class="content">Loading...</div>
+<div id="daily-blaze" class="content">
+Loading...
+</div>
 
 <div class="archive">
 
@@ -160,11 +188,18 @@ target="_blank">
 
 <h2>📚 Previous Devotionals</h2>
 
-<input type="text" id="searchInput" class="search-box"
-placeholder="🔍 Search topic, scripture, message..."
-onkeyup="searchAll()">
+<div class="search-wrap">
 
-<!-- HISTORY -->
+<input type="text"
+id="searchInput"
+class="search-box"
+placeholder="🔍 Search topic, scripture, message..."
+onkeyup="searchAll();autocompleteTopics()">
+
+<div id="suggestions" class="suggestions"></div>
+
+</div>
+
 <div id="history" class="history"></div>
 
 <button class="clear-btn" onclick="clearHistory()">
@@ -187,7 +222,7 @@ const sheetURL =
 "https://script.google.com/macros/s/AKfycbxA09f1vq26mnN-lvy8Bx4uahNTb14zpxjKAZT9H9IEgP3ecGVDSTsofA4JCZIxB1Wk/exec";
 
 let devotionals=[];
-let groupedData={};
+let groupedData=[];
 
 fetch(sheetURL)
 .then(res=>res.json())
@@ -197,7 +232,8 @@ devotionals=data;
 
 showDevotional(data.length-1);
 
-document.getElementById("today-link").innerHTML=`
+document.getElementById("today-link").innerHTML=
+`
 <a href="#"
 onclick="showDevotional(${data.length-1})">
 🔥 ${data[data.length-1]["Topic:"] || "Today's Daily Blaze"}
@@ -224,18 +260,23 @@ devotionals.slice(0,-1).forEach((item,index)=>{
 
 if(!item["Topic:"]) return;
 
-let d=item.Timestamp ? new Date(item.Timestamp) : null;
+let d=item.Timestamp ?
+new Date(item.Timestamp):null;
 
 let month="MAY 2026";
 
 if(d && !isNaN(d)){
-month=d.toLocaleString('en-GB',{
+month=d.toLocaleString(
+'en-GB',
+{
 month:'long',
 year:'numeric'
-}).toUpperCase();
+}
+).toUpperCase();
 }
 
-if(!groupedData[month]) groupedData[month]=[];
+if(!groupedData[month])
+groupedData[month]=[];
 
 groupedData[month].push({
 topic:item["Topic:"],
@@ -253,14 +294,15 @@ index:index
 /* RENDER */
 function renderArchive(data){
 
-let archiveHTML="";
+let html="";
 
 Object.keys(data).reverse().forEach((month,i)=>{
 
 let id="m"+i;
 
-archiveHTML+=`
-<div class="month" onclick="toggleMonth('${id}')">
+html+=`
+<div class="month"
+onclick="toggleMonth('${id}')">
 📅 ${month} ▼
 </div>
 
@@ -269,41 +311,55 @@ archiveHTML+=`
 
 data[month].forEach(item=>{
 
-archiveHTML+=`
-<a href="#" onclick="showDevotional(${item.index})">
+html+=`
+<a href="#"
+onclick="showDevotional(${item.index})">
 ${item.topic}
 </a>
 `;
 
 });
 
-archiveHTML+=`</div>`;
+html+=`</div>`;
+
 });
 
-document.getElementById("archive-list").innerHTML=archiveHTML;
+document.getElementById(
+"archive-list"
+).innerHTML=html;
+
 }
 
 /* TOGGLE */
 function toggleMonth(id){
-document.getElementById(id).classList.toggle("active");
+document.getElementById(id)
+.classList.toggle("active");
 }
 
 /* SEARCH */
 function searchAll(){
 
-let input=document.getElementById("searchInput").value.trim();
+let input=
+document.getElementById(
+"searchInput"
+).value.trim();
 
 if(input===""){
 groupData();
 renderArchive(groupedData);
-document.getElementById("noResults").style.display="none";
+document.getElementById(
+"noResults"
+).style.display="none";
 return;
 }
+
+saveHistory(input);
 
 let filtered={};
 let found=false;
 
-devotionals.slice(0,-1).forEach((item,index)=>{
+devotionals.slice(0,-1)
+.forEach((item,index)=>{
 
 if(!item["Topic:"]) return;
 
@@ -311,27 +367,38 @@ let combined=
 (item["Topic:"]||"")+" "+
 (item["Scripture:"]||"")+" "+
 (item["Message:"]||"")+" "+
-(item["Prayer:"]||"");
+(item["Prayer:"]||"")+" "+
+(item["Declaration/Affirmation "]||"");
 
-if(combined.toLowerCase().includes(input.toLowerCase())){
+if(combined
+.toLowerCase()
+.includes(input.toLowerCase())){
 
 found=true;
 
-let d=item.Timestamp ? new Date(item.Timestamp) : null;
+let d=item.Timestamp ?
+new Date(item.Timestamp):null;
 
 let month="MAY 2026";
 
 if(d && !isNaN(d)){
-month=d.toLocaleString('en-GB',{
+month=d.toLocaleString(
+'en-GB',
+{
 month:'long',
 year:'numeric'
-}).toUpperCase();
+}
+).toUpperCase();
 }
 
-if(!filtered[month]) filtered[month]=[];
+if(!filtered[month])
+filtered[month]=[];
 
 filtered[month].push({
-topic:highlight(item["Topic:"],input),
+topic:highlight(
+item["Topic:"],
+input
+),
 index:index
 });
 
@@ -340,34 +407,139 @@ index:index
 });
 
 if(!found){
-document.getElementById("archive-list").innerHTML="";
-document.getElementById("noResults").style.display="block";
+
+document.getElementById(
+"archive-list"
+).innerHTML="";
+
+document.getElementById(
+"noResults"
+).style.display="block";
+
 return;
 }
 
-document.getElementById("noResults").style.display="none";
+document.getElementById(
+"noResults"
+).style.display="none";
+
 renderArchive(filtered);
+
 }
 
-/* HISTORY SAVE */
+/* AUTOCOMPLETE */
+function autocompleteTopics(){
+
+let input=
+document.getElementById(
+"searchInput"
+).value.toLowerCase();
+
+let box=
+document.getElementById(
+"suggestions"
+);
+
+if(input===""){
+box.style.display="none";
+box.innerHTML="";
+return;
+}
+
+let matches=[];
+
+devotionals.forEach(item=>{
+
+let topic=
+item["Topic:"]||"";
+
+if(
+topic.toLowerCase()
+.includes(input)
+){
+
+if(!matches.includes(topic))
+matches.push(topic);
+
+}
+
+});
+
+if(matches.length===0){
+box.style.display="none";
+return;
+}
+
+let html="";
+
+matches.slice(0,5)
+.forEach(topic=>{
+
+html+=`
+<div onclick="chooseSuggestion('${topic.replace(/'/g,"\\'")}')">
+${topic}
+</div>
+`;
+
+});
+
+box.innerHTML=html;
+box.style.display="block";
+
+}
+
+/* PICK SUGGESTION */
+function chooseSuggestion(topic){
+
+document.getElementById(
+"searchInput"
+).value=topic;
+
+document.getElementById(
+"suggestions"
+).style.display="none";
+
+searchAll();
+
+}
+
+/* HISTORY */
 function saveHistory(term){
 
-let history=JSON.parse(localStorage.getItem("db_history")||"[]");
+let history=
+JSON.parse(
+localStorage.getItem(
+"db_history"
+)||"[]"
+);
 
-history=history.filter(t=>t!==term);
+history=
+history.filter(
+t=>t!==term
+);
+
 history.unshift(term);
 
-if(history.length>5) history.pop();
+if(history.length>5)
+history.pop();
 
-localStorage.setItem("db_history",JSON.stringify(history));
+localStorage.setItem(
+"db_history",
+JSON.stringify(history)
+);
 
 loadHistory();
+
 }
 
-/* LOAD HISTORY */
 function loadHistory(){
 
-let history=JSON.parse(localStorage.getItem("db_history")||"[]");
+let history=
+JSON.parse(
+localStorage.getItem(
+"db_history"
+)||"[]"
+);
 
 let html="";
 
@@ -381,23 +553,31 @@ ${term}
 
 });
 
-document.getElementById("history").innerHTML=html;
+document.getElementById(
+"history"
+).innerHTML=html;
+
 }
 
-/* USE HISTORY */
 function useHistory(term){
 
-document.getElementById("searchInput").value=term;
+document.getElementById(
+"searchInput"
+).value=term;
+
 searchAll();
+autocompleteTopics();
 
 }
 
-/* CLEAR HISTORY */
 function clearHistory(){
 
-localStorage.removeItem("db_history");
+localStorage.removeItem(
+"db_history"
+);
 
 loadHistory();
+
 }
 
 /* HIGHLIGHT */
@@ -405,33 +585,50 @@ function highlight(text,word){
 
 if(!word) return text;
 
-let regex=new RegExp("("+word+")","gi");
+let regex=
+new RegExp(
+"("+word+")",
+"gi"
+);
 
-return text.replace(regex,"<mark>$1</mark>");
+return text.replace(
+regex,
+"<mark>$1</mark>"
+);
+
 }
 
 /* SHOW DEVOTIONAL */
 function showDevotional(index){
 
-let item=devotionals[index];
+let item=
+devotionals[index];
 
-let header="🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting\nBlazing Word International";
+let header=
+"🔥 THE DAILY BLAZE 🔥\n\nApst. K. Atting\nBlazing Word International";
 
-let dateText=item.Timestamp ? formatDate(item.Timestamp) : "";
+let dateText=
+item.Timestamp ?
+formatDate(
+item.Timestamp
+):"";
 
-document.getElementById("daily-blaze").innerText=
+document.getElementById(
+"daily-blaze"
+).innerText=
 `${header}
-${dateText ? "\n📅 " + dateText : ""}
+${dateText ?
+"\n📅 "+dateText:""}
 
-${item["Topic:"] || ""}
+${item["Topic:"]||""}
 
-${item["Scripture:"] || ""}
+${item["Scripture:"]||""}
 
-${item["Message:"] || ""}
+${item["Message:"]||""}
 
-${item["Prayer:"] || ""}
+${item["Prayer:"]||""}
 
-${item["Declaration/Affirmation "] || ""}`;
+${item["Declaration/Affirmation "]||""}`;
 
 window.scrollTo(0,0);
 
@@ -440,20 +637,24 @@ window.scrollTo(0,0);
 /* DATE */
 function formatDate(dateString){
 
-let d=new Date(dateString);
+let d=
+new Date(dateString);
 
-if(isNaN(d)) return "";
+if(isNaN(d))
+return "";
 
-return d.toLocaleDateString('en-GB',{
+return d.toLocaleDateString(
+'en-GB',
+{
 weekday:'long',
 day:'numeric',
 month:'long',
 year:'numeric'
-});
+}
+);
 
 }
-
 </script>
 
 </body>
-</html>
+  </html>
